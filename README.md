@@ -11,7 +11,7 @@ Hopefully this will be a new and united ansible for both our production and stag
 
 
 ``` bash
-> ansible-playbook -i staging_hosts --extra-vars "my_env=staging" deploy_staging.ym
+> ansible-playbook -i staging_hosts --extra-vars "my_env=staging" deploy_staging.yml
 ```
 
 
@@ -28,3 +28,7 @@ Hopefully this will be a new and united ansible for both our production and stag
 ```
 > openssl passwd -6 -salt <salt> <password>
 ```
+
+## Notes on /etc/sudoers
+
+Fresh machines from TSG have a fixed sudoers file and changes will be lost at midnight each day. Email requests with any permenant changes you want to make to /etc/sudoers
