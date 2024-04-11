@@ -1,0 +1,6 @@
+  - name: update nss and curl
+    dnf:
+      pkg: nss-tools, curl, libcurl
+      state: latest
+    become_user: root
+    become_method: sudo
