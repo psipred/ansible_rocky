@@ -67,7 +67,7 @@
   - name: Copy postgres config
     copy:
       src: files/web_server_postgresql.conf
-      dest: "{{  postgres_db_path }}/postgresql.conf"
+      dest: "{{ postgres_db_path }}/postgresql.conf"
       owner: "{{ postgres_user }}"
     when: postgresDB_exist.stat.exists == False
     become_user: root
@@ -114,6 +114,14 @@
       db: "{{ a_a_db }}"
       priv: ALL
 
+  - name: GRANT ALL PRIVILEGES ON SCHEMA public
+    community.postgresql.postgresql_privs:
+      db: "{{ a_a_db }}"
+      privs: ALL
+      type: schema
+      objs: public
+      role: "{{ a_a_user }}"
+
   - name: "Create {{ b_c_db }} db"
     postgresql_db:
       name: "{{ b_c_db }}"
@@ -126,15 +134,24 @@
       db: "{{ b_c_db }}"
       priv: ALL
 
+  - name: GRANT ALL PRIVILEGES ON SCHEMA public
+    community.postgresql.postgresql_privs:
+      db: "{{ b_c_db }}"
+      privs: ALL
+      type: schema
+      objs: public
+      role: "{{ b_c_user }}"
+
   - name: "Enable hstore for {{ b_c_db }}"
     postgresql_ext:
       db: "{{ b_c_db }}"
       name: hstore
 
-  - name: copy over the postgresql systemd service
-    copy:
-      src: files/postgresql.service
-      dest: /etc/systemd/system/multi-user.target.wants/
-      mode: "uog+x"
-    become_user: root
-    become_method: sudo
+# This systemd service is not working right
+  # - name: copy over the postgresql systemd service
+  #   copy:
+  #     src: files/postgresql.service
+  #     dest: /etc/systemd/system/multi-user.target.wants/
+  #     mode: "uog+x"
+  #   become_user: root
+  #   become_method: sudo

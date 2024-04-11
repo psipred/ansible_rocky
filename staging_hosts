@@ -1,5 +1,5 @@
 # bioinfstaging1 : 128.16.4.155 - webserver
-# bioinfstaging2 : 128.16.4.146 - database, queues and caching
+# bioinfstaging2 : 128.16.4.146 - database, redis queues and caching
 # bioinfstaging3 : 128.16.4.145 - aa head
 # bioinfstaging4 : 128.16.4.133 - aa worker
 

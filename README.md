@@ -26,7 +26,7 @@ Hopefully this will be a new and united ansible for both our production and stag
 2. Then hash the password with the salt
 
 ```
-> openssl passwd -6 -salt <salt> <password>
+> openssl passwd -1 -salt <salt> <password>
 ```
 
 ## Notes on /etc/sudoers

@@ -37,6 +37,20 @@
     become_user: root
     become_method: sudo
 
+  - name: Install httpd
+    dnf:
+      pkg: httpd, httpd-devel
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Install VirtualEnv
+    dnf:
+      pkg: python-virtualenv
+      state: latest
+    become_user: root
+    become_method: sudo
+
   - name: Install VirtualEnv
     dnf:
       pkg: python-virtualenv
