@@ -145,7 +145,7 @@
 
   - name: Make the apachedir
     file:
-      path: "/opt/aa_httpd/"
+      path: "{{ app_location }}/aa_httpd/"
       state: directory
       owner: "{{ django_aa_user }}"
       group: apache
@@ -153,7 +153,7 @@
     become_method: sudo
 
   - name : Configure AA/Apache
-    shell: "source {{ django_aa_home }}aa_env/bin/activate; python manage.py runmodwsgi --settings=analytics_automated_project.settings.{{ my_env }} --setup-only --user django_aa --group apache --threads=10 --processes=4 --reload-on-changes --server-root=/opt/aa_httpd/"
+    shell: "source {{ django_aa_home }}aa_env/bin/activate; python manage.py runmodwsgi --settings=analytics_automated_project.settings.{{ my_env }} --setup-only --user django_aa --group apache --threads=10 --processes=4 --reload-on-changes --server-root={{ app_location }}/aa_httpd/"
     args:
       chdir: "{{ django_aa_home }}analytics_automated"
     become_user: "{{ django_aa_user }}"
