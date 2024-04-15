@@ -121,8 +121,8 @@
       src: /webdata/submissions
       dest: "{{ django_worker_home }}/analytics_automated/submissions"
       state: link
-      owner: "{{ django_worker_user }}"
-      group: apache
+      # owner: "{{ django_worker_user }}"
+      # group: apache
 
   - name: Check Celery running status
     shell: ps aux | grep celery
@@ -139,8 +139,6 @@
     register: celery_running
     check_mode: no
 
-# Here we skip running the django migrations as they are only run by aahead
-# AND this role MUST come after aahead installation runs
 #celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q localhost,celery
   - name: Start the aa_workers
     shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q low_localhost,localhost,high_localhost,celery,low_R,R,high_R,low_Python,Python,high_Python --detach --pidfile=celery.pid"
