@@ -4,3 +4,9 @@
       state: latest
     become_user: root
     become_method: sudo
+
+# use inline to update /etc/dnf/dnf.conf with
+# exclude=redis python3* python-psycopg2 libpqxx mod_wsgi perl-CPAN perl-App-cpanm
+# inus.noarch wget java* python3-devel blas lapack blas-devel lapack-devel gnuplo
+# t tcsh compat-libf2c-34.x86 boost* boost-devel_64 gd gd-devel lapack64 lapack64-
+# devel openblas-devel ruby* ffmpeg ffmpeg-devel lmdb ghostscript* ghostscript-devel
