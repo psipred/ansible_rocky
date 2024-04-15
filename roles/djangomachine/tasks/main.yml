@@ -70,3 +70,11 @@
       state: latest
     become_user: root
     become_method: sudo
+
+  - name: Install R
+    dnf:
+      pkg: R-core, R-core-devel
+      state: latest
+    become_user: root
+    become_method: sudo
+
