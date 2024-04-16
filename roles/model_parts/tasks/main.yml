@@ -1,0 +1,31 @@
+  - name: Check simple_modeller exists
+    stat: path={{ app_location }}/simple_modeller
+    register: simple_modeller_exist
+
+  - name: Check out simple_modeller
+    when: simple_modeller_exist.stat.exists == False
+    git:
+      repo: https://github.com/psipred/simple_modeller.git
+      dest: "{{ app_location }}/simple_modeller"
+      clone: yes
+      force: yes
+
+  - name: install requests
+    when: simple_modeller_exist.stat.exists == False
+    shell: pip install requests
+
+  - name: Check PDB dir exists
+    stat: path={{ data_location }}/pdb/
+    register: pdb_path_exist
+
+  - name: make PDB dir
+    when: pdb_path_exist.stat.exists == False
+    file:
+      path: /src/www
+      state: directory
+      mode: 0666
+      recurse: yes
+
+  - name: wget the PDB
+    when: pdb_path_exist.stat.exists == False
+    shell: "cd {{ data _location }}/pdb; wget -r -nd --tries=10 ftp://ftp.ebi.ac.uk/pub/databases/msd/pdb_uncompressed/"
