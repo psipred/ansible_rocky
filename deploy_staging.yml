@@ -98,10 +98,9 @@
     # - memsatsvm
     # - pGenTHREADER # installed to /webdata due to space on bioinfstage4
     # - model_parts # get the bits for the frontend simple modelling
-    - dompred # installed to /webdata due to space on bioinfstage4
-    # - mempack
+    # - dompred # installed to /webdata due to space on bioinfstage4
+    - mempack
     # - bioserf
-    # - ffpred
     # - metsite
     # - hspred
     # - memembed
@@ -110,8 +109,10 @@
     # - dmp
     # - merizo
     # - dmpfold2
+    # - ffpred
   vars_files:
    - secrets/staging_secrets.yaml
+# don't forget the bits form bioserf
 
 # - name: Create blast update machine
 #   hosts: blastupdate
