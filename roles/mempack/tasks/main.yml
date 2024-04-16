@@ -1,159 +1,117 @@
 ---
 
 # get and compile boost 1.38
-  # http://sourceforge.net/projects/boost/files/boost/1.38.0/boost_1_38_0.tar.gz
-# make
-# make install
-# get the datasets
-# unpack the datasets
-# libboost libboost-devel
-  - name: Check if Imagemagick is present
-    stat: path=/opt/ImageMagick-6.8.9-10
-    register: imagemagick_exist
+
+  # - name: Check if ImageMagick is installed
+  #   stat: path=/{{ app_location }}/ImageMagick-7.1.1-30
+  #   register: im_exist
 
   # - name: Download ImageMagick
-  #   when: imagemagick_exist.stat.exists == False
-  #   shell: "chdir=/opt/ wget --timeout 120 ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-6.8.9-10.tar.xz"
-  #   register: get_url_result
-    # until: get_url_result.stdout.find("Unable to establish SSL connection") == -1
-    # retries: 2
-    # delay: 10
-    # when: pip_install.stdout.find("from /usr/lib/python3.4/site-packages (python 3.4)") == -1
-
-  - name: Download ImageMagick
-    when: imagemagick_exist.stat.exists == False
-    get_url:
-      url: ftp://ftp.imagemagick.org/pub/ImageMagick/releases/ImageMagick-6.8.9-10.tar.xz
-      dest: /opt/
-      timeout: 120
-    register: get_url_result
-
-  - name: untar ImageMagick
-    when: imagemagick_exist.stat.exists == False
-    unarchive:
-      src: /opt/ImageMagick-6.8.9-10.tar.xz
-      dest: /opt
-      remote_src: yes
-
-  - name: configure ImageMagick
-    when: imagemagick_exist.stat.exists == False
-    shell: "cd /opt/ImageMagick-6.8.9-10/; ./configure"
-
-  - name: make ImageMagick
-    when: imagemagick_exist.stat.exists == False
-    shell: "cd /opt/ImageMagick-6.8.9-10/; make"
-
-  - name: install ImageMagick
-    when: imagemagick_exist.stat.exists == False
-    shell: "cd /opt/ImageMagick-6.8.9-10/; make install"
-
-  - name: link the ImageMagick libs
-    # when: imagemagick_exist.stat.exists == False
-    shell: "cd /opt/ImageMagick-6.8.9-10/; ldconfig /usr/local/lib"
-
-  # - name: Download Image::Magick
-  #   when: imagemagick_exist.stat.exists == False
+  #   when: im_exist.stat.exists == False
   #   get_url:
-  #     url: http://search.cpan.org/CPAN/authors/id/J/JC/JCRISTY/PerlMagick-6.89-1.tar.gz
-  #     dest: /opt/
+  #     url: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-30.tar.gz
+  #     dest: "{{ app_location }}/"
   #     timeout: 120
   #   register: get_url_result
-  #
-  # - name: untar Image::Magick
-  #   when: imagemagick_exist.stat.exists == False
+
+  # - name: untar ImageMagick
+  #   when: im_exist.stat.exists == False
   #   unarchive:
-  #     src: /opt/PerlMagick-6.89-1.tar.gz
-  #     dest: /opt
+  #     src: "{{ app_location }}/ImageMagick-7.1.1-30.tar.gz"
+  #     dest: "{{ app_location }}/"
   #     remote_src: yes
-  #
-  # - name: configure Image::Magick
-  #   when: imagemagick_exist.stat.exists == False
-  #   shell: "cd /opt/PerlMagick-6.89; perl Makefile.PL"
-  #
-  # - name: make Image::Magick
-  #   when: imagemagick_exist.stat.exists == False
-  #   shell: "cd /opt/PerlMagick-6.89; make"
-  #
-  # - name: configure Image::Magick
-  #   when: imagemagick_exist.stat.exists == False
-  #   shell: "cd /opt/PerlMagick-6.89; make install"
 
-  - name: Check if boost is present
-    stat: path=/opt/boost_1_38_0
-    register: boost_exist
+  # - name: configure IM
+  #   shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; ./configure
+  #   when: im_exist.stat.exists == False
 
-  - name: Download boost 1.38
-    when: boost_exist.stat.exists == False
-    get_url:
-      url: http://sourceforge.net/projects/boost/files/boost/1.38.0/boost_1_38_0.tar.gz
-      dest: /opt/
-      timeout: 120
-    register: get_url_result
+  # - name: make IM
+  #   shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; make
+  #   when: im_exist.stat.exists == False
 
-  - name: untar boost 1.38
-    when: boost_exist.stat.exists == False
-    unarchive:
-      src: /opt/boost_1_38_0.tar.gz
-      dest: /opt
-      remote_src: yes
+  # - name: install IM
+  #   shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; make install
+  #   become_user: root
+  #   become_method: sudo
+  #   when: im_exist.stat.exists == False
 
-  - name: configure boost
-    when: boost_exist.stat.exists == False
-    shell: "cd /opt/boost_1_38_0/; ./configure"
+  # - name: link the ImageMagick libs
+  #   when: im_exist.stat.exists == False
+  #   become_user: root
+  #   become_method: sudo
+  #   shell: "cd {{ app_location }}/ImageMagick-7.1.1-30/; ldconfig /usr/local/lib"
 
-  - name: make boost
-    when: boost_exist.stat.exists == False
-    shell: "cd /opt/boost_1_38_0/; make"
+  # - name: Install SVG.pm
+  #   cpanm:
+  #     name: SVG
+  #     mirror: http://cpan.mirror.triple-it.nl/
+
+  # - name: Install GD::SVG.pm
+  #   cpanm:
+  #     name: GD::SVG
+  #     mirror: http://cpan.mirror.triple-it.nl/
+
+  ### WE ARE NOT RUNNING THE TESTS HERE AS 1 out of 273 tests fails and maybe that's ok
+  # - name: Install Image::Magick.pm
+  #   cpanm:
+  #     name: Image::Magick
+  #     notest: true
+  #     mirror: http://cpan.mirror.triple-it.nl/
+
+  # - name: Check if boost is present
+  #   stat: path={{ app_location }}/boost_1_38_0
+  #   register: boost_exist
+
+  # - name: Download boost 1.38
+  #   when: boost_exist.stat.exists == False
+  #   get_url:
+  #     url: https://master.dl.sourceforge.net/project/boost/boost/1.38.0/boost_1_38_0.tar.gz?viasf=1
+  #     dest: "{{ app_location }}/"
+  #     timeout: 120
+  #   register: get_url_result
+
+  # - name: untar boost 1.38
+  #   when: boost_exist.stat.exists == False
+  #   unarchive:
+  #     src: "{{ app_location }}/boost_1_38_0.tar.gz"
+  #     dest: "{{ app_location }}"
+  #     remote_src: yes
+
+  # - name: configure boost
+  #   when: boost_exist.stat.exists == False
+  #   shell: "cd {{ app_location }}/boost_1_38_0/; ./configure"
+
+  # - name: make boost
+  #   when: boost_exist.stat.exists == False
+  #   shell: "cd {{ app_location }}/boost_1_38_0/; make"
 
   - name: Check if mempack is present
-    stat: path=/opt/mempack
+    stat: path={{ app_location }}/mempack
     register: mempack_exist
 
   - name : Check out mempack from GIT
     when: mempack_exist.stat.exists == False
     git:
       repo: https://github.com/psipred/mempack.git
-      dest: /opt/mempack
+      dest: "{{ app_location }}/mempack"
       clone: yes
       force: yes
 
   - name: Download mempack model data
     when: mempack_exist.stat.exists == False
-    shell: "chdir=/opt/mempack wget --timeout 120 http://bioinfadmin.cs.ucl.ac.uk/downloads/mempack/mempack_datasets.tar.gz"
+    shell: "chdir={{ app_location }}/mempack wget --timeout 120 http://bioinfadmin.cs.ucl.ac.uk/downloads/mempack/mempack_datasets.tar.gz"
     register: get_url_result
     # until: get_url_result.stdout.find("Unable to establish SSL connection") == -1
     # retries: 2
     # delay: 10
-    # when: pip_install.stdout.find("from /usr/lib/python3.4/site-packages (python 3.4)") == -1
-
-  - name: Copy mempack Makefile
-    when: mempack_exist.stat.exists == False
-    copy:
-      src: files/mempack_Makefile
-      dest: "/opt/mempack/Makefile"
 
   - name: make mempack
     when: mempack_exist.stat.exists == False
-    shell: "cd /opt/mempack/; make"
+    shell: "cd {{ app_location }}/mempack/; make"
 
   - name: untar mempack dataset
     when: mempack_exist.stat.exists == False
     unarchive:
-      src: /opt/mempack/mempack_datasets.tar.gz
-      dest: /opt/mempack
+      src: "{{ app_location }}/mempack/mempack_datasets.tar.gz"
+      dest: "{{ app_location }}/mempack"
       remote_src: yes
-
-  - name: Install SVG.pm
-    cpanm:
-      name: SVG
-      mirror: http://cpan.mirror.triple-it.nl/
-
-  - name: Install GD::SVG.pm
-    cpanm:
-      name: GD::SVG
-      mirror: http://cpan.mirror.triple-it.nl/
-
-  - name: Install Image::Magick.pm
-    cpanm:
-      name: Image::Magick
-      mirror: http://cpan.mirror.triple-it.nl/

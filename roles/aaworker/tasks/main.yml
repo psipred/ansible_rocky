@@ -1,7 +1,7 @@
 ---
 
   - name: Install Dependencies
-    yum:
+    dnf:
       pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11
       state: latest
     become_user: root

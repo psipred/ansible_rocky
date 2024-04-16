@@ -1,0 +1,9 @@
+  - name: set somethings to not autoupdate that are runtime critical
+    become_user: root
+    become_method: sudo
+    community.general.ini_file:
+      path: /etc/dnf/dnf.conf
+      section: main
+      option: exclude
+      no_extra_spaces: true
+      value: redis python3* python-psycopg2 libpqxx mod_wsgi perl-CPAN perl-App-cpanm inus.noarch wget java* python3-devel blas lapack blas-devel lapack-devel gnuplot tcsh compat-libf2c-34.x86 boost* boost-devel_64 gd gd-devel lapack64 lapack64-devel openblas-devel ruby* ffmpeg ffmpeg-devel lmdb ghostscript* ghostscript-dev

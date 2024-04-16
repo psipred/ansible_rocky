@@ -1,14 +1,14 @@
 ---
 
   - name: Install libgd
-    yum:
+    dnf:
       pkg: gd
       state: latest
     become_user: root
     become_method: sudo
 
   - name: Install libgd-devel
-    yum:
+    dnf:
       pkg: gd-devel
       state: latest
     become_user: root
