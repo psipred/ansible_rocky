@@ -1,0 +1,40 @@
+---
+
+  - name: Check if disopred installed
+    stat: path={{ app_location }}/disopred
+    register: disopred_exist
+
+  - name : Check Out DISOPRED from GIT
+    when: disopred_exist.stat.exists == False
+    git:
+      repo: https://github.com/psipred/disopred.git
+      dest: "{{ app_location }}/disopred"
+      clone: yes
+      force: yes
+
+  - name: Download dso_lib
+    when: disopred_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/DISOPRED/dso_lib.tar.gz
+      dest: "{{ app_location }}/disopred/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar dso_lib
+    when: disopred_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/disopred/dso_lib.tar.gz"
+      dest: /opt/disopred
+      remote_src: yes
+
+  - name: clean disopred components
+    when: disopred_exist.stat.exists == False
+    shell: 'cd {{ app_location }}/disopred/src; make clean'
+
+  - name: make disopred components
+    when: disopred_exist.stat.exists == False
+    shell: 'cd {{ app_location }}/disopred/src; make'
+
+  - name: install disopred components
+    when: disopred_exist.stat.exists == False
+    shell: 'cd {{ app_location }}/disopred/src; make install'

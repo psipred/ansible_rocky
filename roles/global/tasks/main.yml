@@ -1,6 +1,6 @@
   - name: Add some global packages
     dnf:
-      pkg: nss-tools, curl, libcurl, python3-pip, python3-devel
+      pkg: nss-tools, curl, libcurl, python3-pip, python3-devel, perl-App-cpanminus
       state: latest
     become_user: root
     become_method: sudo
