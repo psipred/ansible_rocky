@@ -99,14 +99,12 @@
     # - mempack
     # - metsite
     # - hspred
-    - memembed
-    # - maketdb
-    # - dmpfold
+    # - memembed
     # - dmp
-    # - merizo
+    - merizo
     # - dmpfold2
+    # - DMPmetal
     # - ffpred
-    # - metapred thingy
   vars_files:
    - secrets/staging_secrets.yaml
 # don't forget the bits form bioserf
