@@ -1,0 +1,15 @@
+  - name: Check memembed is present
+    stat: path={{ app_location }}/memembed
+    register: memembed_exist
+
+  - name : Check out memembed from GIT
+    when: memembed_exist.stat.exists == False
+    git:
+      repo: https://github.com/psipred/memembed.git
+      dest: "{{ app_location }}/memembed"
+      clone: yes
+      force: yes
+
+  - name: make and install memembed
+    shell: "cd {{ app_location }}/memembed; make"
+    when: memembed_exist.stat.exists == False

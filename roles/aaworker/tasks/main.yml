@@ -1,19 +1,19 @@
 ---
 
-  # - name: Install Dependencies
-  #   dnf:
-  #     pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11
-  #     state: latest
-  #   become_user: root
-  #   become_method: sudo
+  - name: Install Dependencies
+    dnf:
+      pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11
+      state: latest
+    become_user: root
+    become_method: sudo
 
-  # - name: "Add {{ django_worker_user }} user"
-  #   user:
-  #     name: "{{ django_worker_user }}"
-  #     password: "{{ django_worker_hashed_password }}"
-  #     group: apache
-  #   become_user: root
-  #   become_method: sudo
+  - name: "Add {{ django_worker_user }} user"
+    user:
+      name: "{{ django_worker_user }}"
+      password: "{{ django_worker_hashed_password }}"
+      group: apache
+    become_user: root
+    become_method: sudo
 
   - name : Check Out helper scripts
     git:
@@ -22,133 +22,133 @@
       clone: yes
       force: yes
 
-#   - name: Check if we have aa_env
-#     stat: "path={{ django_worker_home }}/aa_env"
-#     become_user: root
-#     register: aa_env_exist
+  - name: Check if we have aa_env
+    stat: "path={{ django_worker_home }}/aa_env"
+    become_user: root
+    register: aa_env_exist
 
-#   - name: Create the aa worker virtualenv
-#     become_user: "{{ django_worker_user }}"
-#     command: virtualenv -p /bin/python3 aa_env
-#     when: aa_env_exist.stat.exists == False
-#     args:
-#         chdir: "{{ django_worker_home }}"
+  - name: Create the aa worker virtualenv
+    become_user: "{{ django_worker_user }}"
+    command: virtualenv -p /bin/python3 aa_env
+    when: aa_env_exist.stat.exists == False
+    args:
+        chdir: "{{ django_worker_home }}"
 
-#   - name : Check Out AA from git
-#     become_user: "{{ django_worker_user }}"
-#     git:
-#       repo: https://github.com/psipred/analytics_automated.git
-#       dest: "{{ django_worker_home }}analytics_automated"
-#       clone: yes
-#       force: yes
+  - name : Check Out AA from git
+    become_user: "{{ django_worker_user }}"
+    git:
+      repo: https://github.com/psipred/analytics_automated.git
+      dest: "{{ django_worker_home }}analytics_automated"
+      clone: yes
+      force: yes
 
-#   - name: Install requirements
-#     become_user: "{{ django_worker_user }}"
-#     pip:
-#       state: latest
-#       chdir: "{{ django_worker_home }}"
-#       virtualenv: "{{ django_worker_home }}aa_env"
-#       virtualenv_command: /bin/virtualenv
-#       virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
-#       requirements: "{{ django_worker_home }}analytics_automated/requirements/staging.txt"
+  - name: Install requirements
+    become_user: "{{ django_worker_user }}"
+    pip:
+      state: latest
+      chdir: "{{ django_worker_home }}"
+      virtualenv: "{{ django_worker_home }}aa_env"
+      virtualenv_command: /bin/virtualenv
+      virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
+      requirements: "{{ django_worker_home }}analytics_automated/requirements/staging.txt"
 
-#   - name: Copy aa staging_conf
-#     become_user: "{{ django_worker_user }}"
-#     copy:
-#       src: secrets/staging_worker.py
-#       dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/staging.py"
-#       owner: "{{ django_worker_user }}"
+  - name: Copy aa staging_conf
+    become_user: "{{ django_worker_user }}"
+    copy:
+      src: secrets/staging_worker.py
+      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/staging.py"
+      owner: "{{ django_worker_user }}"
 
-#   - name: Copy aa staging secrets
-#     become_user: "{{ django_worker_user }}"
-#     copy:
-#       src: secrets/staging_worker_secrets.json
-#       dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/"
-#       owner: "{{ django_worker_user }}"
+  - name: Copy aa staging secrets
+    become_user: "{{ django_worker_user }}"
+    copy:
+      src: secrets/staging_worker_secrets.json
+      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/"
+      owner: "{{ django_worker_user }}"
 
-#   - name: Copy aa base secrets
-#     become_user: "{{ django_worker_user }}"
-#     copy:
-#       src: secrets/base_secrets.json
-#       dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/"
-#       owner: "{{ django_worker_user }}"
+  - name: Copy aa base secrets
+    become_user: "{{ django_worker_user }}"
+    copy:
+      src: secrets/base_secrets.json
+      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/"
+      owner: "{{ django_worker_user }}"
 
-#   - name: Copy celery conf
-#     become_user: "{{ django_worker_user }}"
-#     copy:
-#       src: files/{{ my_env }}/celery.py
-#       dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/celery.py"
-#       owner: "{{ django_worker_user }}"
+  - name: Copy celery conf
+    become_user: "{{ django_worker_user }}"
+    copy:
+      src: files/{{ my_env }}/celery.py
+      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/celery.py"
+      owner: "{{ django_worker_user }}"
 
-#   - name: Copy wsgi.py
-#     become_user: "{{ django_worker_user }}"
-#     copy:
-#       src: files/{{ my_env }}/wsgi.py
-#       dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/"
-#       owner: "{{ django_worker_user }}"
+  - name: Copy wsgi.py
+    become_user: "{{ django_worker_user }}"
+    copy:
+      src: files/{{ my_env }}/wsgi.py
+      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/"
+      owner: "{{ django_worker_user }}"
 
-#   - name: Make aa logging dir
-#     become_user: "{{ django_worker_user }}"
-#     file:
-#       path: "{{ django_worker_home }}/analytics_automated/logs"
-#       state: directory
-#       owner: "{{ django_worker_user }}"
+  - name: Make aa logging dir
+    become_user: "{{ django_worker_user }}"
+    file:
+      path: "{{ django_worker_home }}/analytics_automated/logs"
+      state: directory
+      owner: "{{ django_worker_user }}"
 
-#   - name: Check aa submissions
-#     stat: "path={{ django_worker_home }}/analytics_automated/submissions"
-#     become_user: "{{ django_worker_user }}"
-#     register: submissions_type
+  - name: Check aa submissions
+    stat: "path={{ django_worker_home }}/analytics_automated/submissions"
+    become_user: "{{ django_worker_user }}"
+    register: submissions_type
 
-#   - name: remove the submissions dir
-#     when: submissions_type.stat.isdir is defined and submissions_type.stat.isdir and submissions_type.stat.islink is not defined
-#     become_user: "{{ django_worker_user }}"
-#     file:
-#       path: "{{ django_worker_home }}analytics_automated/submissions"
-#       state: absent
+  - name: remove the submissions dir
+    when: submissions_type.stat.isdir is defined and submissions_type.stat.isdir and submissions_type.stat.islink is not defined
+    become_user: "{{ django_worker_user }}"
+    file:
+      path: "{{ django_worker_home }}analytics_automated/submissions"
+      state: absent
 
-#   - name: symlink submissions to the aa dir
-#     become_user: "{{ django_worker_user }}"
-#     when: submissions_type.stat.isdir is defined and submissions_type.stat.isdir and submissions_type.stat.islink is not defined
-#     file:
-#       src: /webdata/submissions
-#       dest: "{{ django_worker_home }}/analytics_automated/submissions"
-#       state: link
-#       # owner: "{{ django_worker_user }}"
-#       # group: apache
+  - name: symlink submissions to the aa dir
+    become_user: "{{ django_worker_user }}"
+    when: submissions_type.stat.isdir is defined and submissions_type.stat.isdir and submissions_type.stat.islink is not defined
+    file:
+      src: /webdata/submissions
+      dest: "{{ django_worker_home }}/analytics_automated/submissions"
+      state: link
+      # owner: "{{ django_worker_user }}"
+      # group: apache
 
-#   - name: Check Celery running status
-#     shell: ps aux | grep celery
-#     register: celery_running
-#     check_mode: no
+  - name: Check Celery running status
+    shell: ps aux | grep celery
+    register: celery_running
+    check_mode: no
 
-#   - name: Stop the aa_workers
-#     shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery multi stop_verify worker --pidfile=/home/django_worker/analytics_automated/celery.pid --logfile=/home/django_worker/analytics_automated/logs/"
-#     become_user: "{{ django_worker_user }}"
-#     #when: celery_running.stdout.find("celery worker") == 1
+  - name: Stop the aa_workers
+    shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery multi stop_verify worker --pidfile=/home/django_worker/analytics_automated/celery.pid --logfile=/home/django_worker/analytics_automated/logs/"
+    become_user: "{{ django_worker_user }}"
+    #when: celery_running.stdout.find("celery worker") == 1
 
-#   - name: Check Celery stopped status
-#     shell: ps aux | grep celery
-#     register: celery_running
-#     check_mode: no
+  - name: Check Celery stopped status
+    shell: ps aux | grep celery
+    register: celery_running
+    check_mode: no
 
-# #celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q localhost,celery
-#   - name: Start the aa_workers
-#     shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q low_localhost,localhost,high_localhost,celery,low_R,R,high_R,low_Python,Python,high_Python --detach --pidfile=celery.pid"
-#     become_user: "{{ django_worker_user }}"
-#     environment:
-#       DRMAA_LIBRARY_PATH: /{{ app_location }}/ogs_src/GE2011.11/lib/linux-x64/libdrmaa.so
-#       SGE_ROOT: /{{ app_location }}/ogs_src/GE2011.11/
-#     #when: celery_running.stdout.find("-m celery worker --loglevel=INFO") == -1
+#celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q localhost,celery
+  - name: Start the aa_workers
+    shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q low_localhost,localhost,high_localhost,celery,low_R,R,high_R,low_Python,Python,high_Python --detach --pidfile=celery.pid"
+    become_user: "{{ django_worker_user }}"
+    environment:
+      DRMAA_LIBRARY_PATH: /{{ app_location }}/ogs_src/GE2011.11/lib/linux-x64/libdrmaa.so
+      SGE_ROOT: /{{ app_location }}/ogs_src/GE2011.11/
+    #when: celery_running.stdout.find("-m celery worker --loglevel=INFO") == -1
 
-#   - name: copy over the aa worker service
-#     become_user: root
-#     become_method: sudo
-#     copy:
-#       src: files/aaworker.service
-#       dest: /etc/systemd/system/
-#       mode: "uog+x"
+  - name: copy over the aa worker service
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/aaworker.service
+      dest: /etc/systemd/system/
+      mode: "uog+x"
 
-#   - name: Add service to systemctl
-#     become_user: root
-#     become_method: sudo
-#     shell: systemctl enable aaworker.service
+  - name: Add service to systemctl
+    become_user: root
+    become_method: sudo
+    shell: systemctl enable aaworker.service

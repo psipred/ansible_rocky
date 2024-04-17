@@ -97,15 +97,16 @@
     # - model_parts # get the bits for the frontend simple modelling
     # - dompred # installed to /webdata due to space on bioinfstage4
     # - mempack
-    - metsite
+    # - metsite
     # - hspred
-    # - memembed
+    - memembed
     # - maketdb
     # - dmpfold
     # - dmp
     # - merizo
     # - dmpfold2
     # - ffpred
+    # - metapred thingy
   vars_files:
    - secrets/staging_secrets.yaml
 # don't forget the bits form bioserf
