@@ -1,0 +1,45 @@
+  - name: Check dmpmetal is present
+    stat: path={{ app_location }}/DMPmetal
+    register: dmpmetal_exist
+
+  - name : Check out dmpmetal from GIT
+    when: dmpmetal_exist.stat.exists == False
+    git:
+      repo: https://github.com/psipred/DMPmetal.git
+      dest: "{{ app_location }}/DMPmetal"
+      clone: yes
+      force: yes
+
+INSTALL flash_attn separately
+with
+export LD_LIBRARY_PATH=/home/django_worker/aa_env/lib/python3.9/site-packages/nvidia/cudnn/lib/:/home/django_worker/aa_env/lib/python3.9/site-packages/nvidia/cuda_cupti/lib/:/home/django_worker/aa_env/lib/python3.9/site-packages/nvidia/nccl/lib/:$LD_LIBRARY_PATH
+
+Then install the rest
+
+  - name: Install requirements
+    when: dmpmetal_exist.stat.exists == False
+    become_user: "{{ django_worker_user }}"
+    pip:
+      state: latest
+      chdir: "{{ django_worker_home }}"
+      virtualenv: "{{ django_worker_home }}aa_env"
+      virtualenv_command: /bin/virtualenv
+      virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
+      requirements: "{{ app_location }}/DMPmetal/requirements_web.txt"
+
+
+
+  - name: Download dmpmetal weights
+    when: dmpmetal_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/DMPmetal/metalpred.pt.gz
+      dest: "{{ app_location }}/DMPmetal/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar dmpmetal weights
+    when: dmpmetal_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/DMPmetal/metalpred.pt.gz"
+      dest: "{{ app_location }}/DMPmetal"
+      remote_src: yes

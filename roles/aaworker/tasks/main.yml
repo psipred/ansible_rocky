@@ -1,8 +1,19 @@
 ---
+  - name: Add epel
+    dnf:
+      pkg: epel-release
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Add nvidia repo
+    shell: dnf config-manager --add-repo https://developer.download.nvidia.com/compute/cuda/repos/rhel9/x86_64/cuda-rhel9.repo 
+    become_user: root
+    become_method: sudo
 
   - name: Install Dependencies
     dnf:
-      pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11
+      pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11, nvidia-driver, nvidia-settings, cuda-driver, cuda-11-8
       state: latest
     become_user: root
     become_method: sudo

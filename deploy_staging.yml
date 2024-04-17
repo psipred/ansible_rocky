@@ -89,7 +89,7 @@
   become_method: sudo
   roles:
     # - djangomachine
-    # - aaworker
+    - aaworker
     # - psipred
     # - disopred
     # - memsatsvm
@@ -101,9 +101,10 @@
     # - hspred
     # - memembed
     # - dmp
-    - merizo
+    # - dmpmetal
+    # - merizo
     # - dmpfold2
-    # - DMPmetal
+    # - s4pred
     # - ffpred
   vars_files:
    - secrets/staging_secrets.yaml
