@@ -2,88 +2,88 @@
 
 # get and compile boost 1.38
 
-  # - name: Check if ImageMagick is installed
-  #   stat: path=/{{ app_location }}/ImageMagick-7.1.1-30
-  #   register: im_exist
+  - name: Check if ImageMagick is installed
+    stat: path=/{{ app_location }}/ImageMagick-7.1.1-30
+    register: im_exist
 
-  # - name: Download ImageMagick
-  #   when: im_exist.stat.exists == False
-  #   get_url:
-  #     url: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-30.tar.gz
-  #     dest: "{{ app_location }}/"
-  #     timeout: 120
-  #   register: get_url_result
+  - name: Download ImageMagick
+    when: im_exist.stat.exists == False
+    get_url:
+      url: https://github.com/ImageMagick/ImageMagick/archive/refs/tags/7.1.1-30.tar.gz
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
 
-  # - name: untar ImageMagick
-  #   when: im_exist.stat.exists == False
-  #   unarchive:
-  #     src: "{{ app_location }}/ImageMagick-7.1.1-30.tar.gz"
-  #     dest: "{{ app_location }}/"
-  #     remote_src: yes
+  - name: untar ImageMagick
+    when: im_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/ImageMagick-7.1.1-30.tar.gz"
+      dest: "{{ app_location }}/"
+      remote_src: yes
 
-  # - name: configure IM
-  #   shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; ./configure
-  #   when: im_exist.stat.exists == False
+  - name: configure IM
+    shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; ./configure
+    when: im_exist.stat.exists == False
 
-  # - name: make IM
-  #   shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; make
-  #   when: im_exist.stat.exists == False
+  - name: make IM
+    shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; make
+    when: im_exist.stat.exists == False
 
-  # - name: install IM
-  #   shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; make install
-  #   become_user: root
-  #   become_method: sudo
-  #   when: im_exist.stat.exists == False
+  - name: install IM
+    shell: cd {{ app_location }}/ImageMagick-7.1.1-30/; make install
+    become_user: root
+    become_method: sudo
+    when: im_exist.stat.exists == False
 
-  # - name: link the ImageMagick libs
-  #   when: im_exist.stat.exists == False
-  #   become_user: root
-  #   become_method: sudo
-  #   shell: "cd {{ app_location }}/ImageMagick-7.1.1-30/; ldconfig /usr/local/lib"
+  - name: link the ImageMagick libs
+    when: im_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    shell: "cd {{ app_location }}/ImageMagick-7.1.1-30/; ldconfig /usr/local/lib"
 
-  # - name: Install SVG.pm
-  #   cpanm:
-  #     name: SVG
-  #     mirror: http://cpan.mirror.triple-it.nl/
+  - name: Install SVG.pm
+    cpanm:
+      name: SVG
+      mirror: http://cpan.mirror.triple-it.nl/
 
-  # - name: Install GD::SVG.pm
-  #   cpanm:
-  #     name: GD::SVG
-  #     mirror: http://cpan.mirror.triple-it.nl/
+  - name: Install GD::SVG.pm
+    cpanm:
+      name: GD::SVG
+      mirror: http://cpan.mirror.triple-it.nl/
 
-  ### WE ARE NOT RUNNING THE TESTS HERE AS 1 out of 273 tests fails and maybe that's ok
-  # - name: Install Image::Magick.pm
-  #   cpanm:
-  #     name: Image::Magick
-  #     notest: true
-  #     mirror: http://cpan.mirror.triple-it.nl/
+  ## WE ARE NOT RUNNING THE TESTS HERE AS 1 out of 273 tests fails and maybe that's ok
+  - name: Install Image::Magick.pm
+    cpanm:
+      name: Image::Magick
+      notest: true
+      mirror: http://cpan.mirror.triple-it.nl/
 
-  # - name: Check if boost is present
-  #   stat: path={{ app_location }}/boost_1_38_0
-  #   register: boost_exist
+  - name: Check if boost is present
+    stat: path={{ app_location }}/boost_1_37_0
+    register: boost_exist
 
-  # - name: Download boost 1.38
-  #   when: boost_exist.stat.exists == False
-  #   get_url:
-  #     url: https://master.dl.sourceforge.net/project/boost/boost/1.38.0/boost_1_38_0.tar.gz?viasf=1
-  #     dest: "{{ app_location }}/"
-  #     timeout: 120
-  #   register: get_url_result
+  - name: Download boost 1.37
+    when: boost_exist.stat.exists == False
+    get_url:
+      url: https://master.dl.sourceforge.net/project/boost/boost/1.37.0/boost_1_37_0.tar.gz?viasf=1
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
 
-  # - name: untar boost 1.38
-  #   when: boost_exist.stat.exists == False
-  #   unarchive:
-  #     src: "{{ app_location }}/boost_1_38_0.tar.gz"
-  #     dest: "{{ app_location }}"
-  #     remote_src: yes
+  - name: untar boost 1.37
+    when: boost_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/boost_1_37_0.tar.gz"
+      dest: "{{ app_location }}"
+      remote_src: yes
 
-  # - name: configure boost
-  #   when: boost_exist.stat.exists == False
-  #   shell: "cd {{ app_location }}/boost_1_38_0/; ./configure"
+  - name: configure boost
+    when: boost_exist.stat.exists == False
+    shell: "cd {{ app_location }}/boost_1_37_0/; ./configure"
 
-  # - name: make boost
-  #   when: boost_exist.stat.exists == False
-  #   shell: "cd {{ app_location }}/boost_1_38_0/; make"
+  - name: make boost
+    when: boost_exist.stat.exists == False
+    shell: "cd {{ app_location }}/boost_1_37_0/; make"
 
   - name: Check if mempack is present
     stat: path={{ app_location }}/mempack
