@@ -1,8 +1,8 @@
   - name : Check Out update scripts from GIT
-    become_user: "{{ django_worker_user }}"
+    become_user: "{{ blast_worker_user }}"
     git:
       repo: https://github.com/psipred/server_update.git
-      dest: "{{ django_worker_home }}/server_update"
+      dest: "{{ blast_worker_home }}/server_update"
       clone: yes
       force: yes
 
@@ -30,7 +30,9 @@
     shell: systemctl enable aaworker.service
 
   - name: make tmp dir
-    shell: mkdir {{ data_location }}/update_tmp; chown blast_worker {{ data_location}}/update_tmp
+    shell: mkdir {{ data_location }}/update_tmp; chown {{ blast_worker_user }} {{ data_location}}/update_tmp
 
   - name: make tmp dir
-    shell: mkdir {{ data_location }}/update_tdb; chown blast_worker {{ data_location }}/update_tdb
+    shell: mkdir {{ data_location }}/update_tdb; chown {{ blast_worker_user }} {{ data_location }}/update_tdb
+
+
