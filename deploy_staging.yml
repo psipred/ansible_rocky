@@ -56,17 +56,17 @@
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
 
-# - name: Create blastmachine
-#   hosts: blastmachine
-#   become: true
-#   become_user: root
-#   become_method: sudo
-#   roles:
-#     - djangomachine
-#     - blastmachine
-#     - blastworkers
-#   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml
+- name: Create blastmachine
+  hosts: blastmachine
+  become: true
+  become_user: root
+  become_method: sudo
+  roles:
+    # - djangomachine
+    - blastmachine
+    # - blastworkers
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Create blast_cache machine
 #   hosts: blast_cache
@@ -89,13 +89,13 @@
   become_method: sudo
   roles:
     # - djangomachine
-    - aaworker
+    # - aaworker
     # - psipred
     # - disopred
     # - memsatsvm
-    # - pGenTHREADER # installed to /webdata due to space on bioinfstage4
-    # - model_parts # get the bits for the frontend simple modelling
-    # - dompred # installed to /webdata due to space on bioinfstage4
+    # - pGenTHREADER 
+    # - model_parts 
+    # - dompred 
     # - mempack
     # - metsite
     # - hspred

@@ -37,6 +37,12 @@
       dest: "{{ app_location }}/dompred/"
       remote_src: yes
 
+  - name: remove tar.gz
+    when: dompred_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/dompred/dompred_data.tar.gz"
+
   - name: compile DomSSEA
     when: dompred_exist.stat.exists == False
     shell: cd {{ app_location }}/dompred/src; javac DomSSEA.java

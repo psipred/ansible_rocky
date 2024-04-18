@@ -115,3 +115,21 @@
       src: "{{ app_location }}/mempack/mempack_datasets.tar.gz"
       dest: "{{ app_location }}/mempack"
       remote_src: yes
+
+  - name: remove tar.gz
+    when: mempack_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/mempack/mempack_datasets.tar.gz"
+
+  - name: remove IM tar.gz
+    when: mempack_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/ImageMagick-7.1.1-30.tar.gz"
+
+  - name: remove boost tar.gz
+    # when: mempack_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/boost_1_37_0.tar.gz"

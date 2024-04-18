@@ -27,6 +27,12 @@
       dest: "{{ app_location }}/disopred"
       remote_src: yes
 
+  - name: remove tar.gz
+    when: disopred_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/disopred/dso_lib.tar.gz"
+
   - name: clean disopred components
     when: disopred_exist.stat.exists == False
     shell: 'cd {{ app_location }}/disopred/src; make clean'
@@ -38,3 +44,4 @@
   - name: install disopred components
     when: disopred_exist.stat.exists == False
     shell: 'cd {{ app_location }}/disopred/src; make install'
+

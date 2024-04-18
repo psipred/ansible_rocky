@@ -30,6 +30,12 @@
     shell: cd {{ app_location }}/ncbi-blast-2.15.0+-src/c++; make install
     when: blastp_exist.stat.exists == False
 
+  - name: remove cath dom tar.gz
+    when: blastp_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/ncbi-blast-2.15.0+-src.tar.gz"
+
   - name: Check if we the psiblast is installed
     stat: path={{ app_location }}/blast-2.2.26/bin/blastpgp
     register: blastpgp_exist
@@ -48,6 +54,12 @@
       src: "{{ app_location }}/blast-2.2.26-x64-linux.tar.gz"
       dest: "{{ app_location }}/"
       remote_src: yes
+
+  - name: remove cath dom tar.gz
+    when: blastpgp_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/blast-2.2.26-x64-linux.tar.gz"
 
   - name: Check if we have uniref90
     stat:
@@ -88,7 +100,7 @@
 
   - name: Make pdbaa dir
     file:
-      path: "{{ data_location }}/pdbaa/""
+      path: "{{ data_location }}/pdbaa/"
       mode: uog+rw
       state: directory
     when: pdbaa_exist.stat.exists == False
@@ -171,3 +183,4 @@
   - name: change hhdb permissions
     shell: cd {{ data_location }}/hhdb/; chmod uog+rw *
     when: hhsuite_exist.stat.exists == False
+

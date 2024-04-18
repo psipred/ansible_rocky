@@ -75,3 +75,15 @@
       dest: "{{ app_location }}/pgenthreader/data"
       timeout: 120
     register: get_url_result
+
+  - name: remove foldlib tar.gz
+    when: pgenthreader_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/pgenthreader/foldlib.tar.gz"
+
+  - name: remove cath dom tar.gz
+    when: pgenthreader_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/pgenthreader/cath_domain_tdb_4_2.tar.gz"

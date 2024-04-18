@@ -26,3 +26,18 @@
   - name: install colorRamps
     shell: "chdir={{ app_location }}/ R CMD INSTALL colorRamps_2.3.4.tar.gz"
     become_user: root
+
+  - name: remove rcpp dom tar.gz
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/Rcpp_1.0.12.tar.gz"
+
+  - name: remove bio3d dom tar.gz
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/bio3d_2.4-4.tar.gz"
+
+  - name: remove colorRamps tar.gz
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/colorRamps_2.3.4.tar.gz"
