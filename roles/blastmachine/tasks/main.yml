@@ -30,7 +30,7 @@
     shell: cd {{ app_location }}/ncbi-blast-2.15.0+-src/c++; make install
     when: blastp_exist.stat.exists == False
 
-  - name: remove cath dom tar.gz
+  - name: remove blast tar.gz
     when: blastp_exist.stat.exists == False
     ansible.builtin.file:
       state: absent
@@ -55,7 +55,7 @@
       dest: "{{ app_location }}/"
       remote_src: yes
 
-  - name: remove cath dom tar.gz
+  - name: remove blast+ tar.gz
     when: blastpgp_exist.stat.exists == False
     ansible.builtin.file:
       state: absent
@@ -145,6 +145,12 @@
       src: "{{ app_location }}/hhsuite-3.3.0-AVX2-Linux.tar.gz"
       dest: "{{ app_location }}/hh-suite/"
       remote_src: yes
+
+  - name: remove hhsuite tar.gz
+    when: hhsuite_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/hhsuite-3.3.0-AVX2-Linux.tar.gz"
 
   - name: Check if there is a dir for the HHpdb db
     stat: path={{ data_location }}/hhdb

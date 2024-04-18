@@ -1,0 +1,389 @@
+# cSignalP
+# http://www.cbs.dtu.dk/services/SignalP/
+#NetPhos/ape-1.0
+# http://www.cbs.dtu.dk/services/NetPhos/
+#NETNGLYC
+# http://www.cbs.dtu.dk/services/NetNGlyc/
+#NetOGlyc
+# http://www.cbs.dtu.dk/services/NetOGlyc-3.1/
+#PSORT
+# https://github.com/fmaguire/WoLFPSort
+#COILS
+# http://www.russelllab.org/coils/
+#EMBOSS
+# http://emboss.sourceforge.net/
+
+### IT WOULD BE MUCH BETTER TO USE ANSIBLE INLINE RATHER THAN COPYING OVER LOTS OF FILES from staging and production dirs
+### Editin the EMBOSS make file could also be done with inline
+
+
+---
+
+  - name: Install glibc.i686
+    dnf:
+      pkg: glibc.i686
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Check if signalP is installed
+    stat: path={{ app_location }}/signalp-4.1
+    register: signalp_exist
+
+  - name: Download signalP
+    when: signalp_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/signalp-4.1e.Linux.tar.gz
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar signalp
+    when: signalp_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/signalp-4.1e.Linux.tar.gz"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: copy over the configured signalp script
+    when: signalp_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env }}/ffpred/signalp
+      dest: "{{ app_location }}/signalp-4.1"
+      mode: "uog+x"
+
+  - name: remove signalp tar.gz
+    when: signalp_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/signalp-4.1e.Linux.tar.gz"
+
+  - name: Check if nephpos is installed
+    stat: path={{ app_location }}/ape-1.0
+    register: netphos_exist
+
+  - name: Download netphos
+    when: netphos_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/netphos-3.1.Linux.tar
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar netphos
+    when: netphos_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/netphos-3.1.Linux.tar"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  # NOTE THE THE ARCHITECTURE DETECTION DOES NOT WORK IN THE APE SCRIPT FOR x86_64
+  - name: copy over the configured ape script
+    when: netphos_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env }}/ffpred/ape
+      dest: "{{ app_location }}/ape-1.0"
+      mode: "uog+x"
+
+  - name: make exes work
+    when: netphos_exist.stat.exists == False
+    shell: 'cd {{ app_location }}/ape-1.0/bin; chmod uog+x *'
+
+  - name: remove netphos tar.gz
+    when: netphos_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/netphos-3.1.Linux.tar"
+
+  - name: Check if netNGlyc is installed
+    stat: path={{ app_location }}/netNglyc-1.0
+    register: netnglyc_exist
+
+  - name: Download netnglyc
+    when: netnglyc_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/netNglyc-1.0c.Linux.tar.Z
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar netNglyc
+    when: netnglyc_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/netNglyc-1.0c.Linux.tar.Z"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: copy over the configured netnglyc script
+    when: netnglyc_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env}}/ffpred/netNglyc
+      dest: "{{ app_location }}/netNglyc-1.0"
+      mode: "uog+x"
+
+  - name: remove netnglyc tar.gz
+    when: netnglyc_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/netNglyc-1.0c.Linux.tar.Z"
+
+  - name: Check if netOGlyc is installed
+    stat: path={{ app_location }}/netOglyc-3.1d
+    register: netoglyc_exist
+
+  - name: Download netoglyc
+    when: netoglyc_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/netOglyc-3.1d.Linux.tar.Z
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar netOglyc
+    when: netoglyc_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/netOglyc-3.1d.Linux.tar.Z"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: copy over the configured fasta2howlin script
+    when: netoglyc_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env }}/ffpred/fasta2howlin
+      dest: "{{ app_location }}/netOglyc-3.1d/bin"
+      mode: "uog+x"
+
+  - name: copy over the configured netOglyc script
+    when: netoglyc_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env}}/ffpred/netOglyc
+      dest: "{{ app_location }}/netOglyc-3.1d"
+      mode: "uog+x"
+
+  - name: remove netoglyc tar.gz
+    when: netoglyc_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/netOglyc-3.1d.Linux.tar.Z"
+
+  - name: Check if wolfpsort is installed
+    stat: path={{ app_location }}/WoLFPSort-master
+    register: psort_exist
+
+  - name: Download wolfpsort
+    when: psort_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/wolfpsort_0.2.zip
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar wolfpsort
+    when: psort_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/wolfpsort_0.2.zip"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: copy over the configured runWold.sh script
+    when: psort_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env }}/ffpred/runWolf.sh
+      dest: "{{ app_location }}/WoLFPSort-master/bin/"
+      mode: "uog+x"
+
+  - name: remove wolfpsort tar.gz
+    when: psort_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/wolfpsort_0.2.zip"
+
+  - name: Check if coils is installed
+    stat: path={{ app_location }}/coils
+    register: coils_exist
+
+  - name: Download coils
+    when: coils_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/coils.tar.gz
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar coils
+    when: coils_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/coils.tar.gz"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: compile coils
+    shell: "cd {{ app_location }}/coils; cc -O2 -I. -o ncoils ncoils.c read_matrix.c -lm"
+    when: coils_exist.stat.exists == False
+#
+  - name: copy over the coils.sh script
+    when: coils_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env}}/ffpred/coils.sh
+      dest: "{{ app_location }}/coils"
+      mode: "uog+x"
+
+  - name: remove coils tar.gz
+    when: coils_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/coils.tar.gz"
+
+  - name: Check if EMBOSS is installed
+    stat: path={{ app_location }}/EMBOSS-6.4.0
+    register: emboss_exist
+
+# THIS DID NOT INSTALL CORRECTLY. configure needs a prefix AND the resulting
+# make file needs to be edited to remove jemboss from line 279
+
+  - name: Download EMBOSS
+    when: emboss_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred_feature_suite/EMBOSS-6.4.0.tar.gz
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: untar emboss
+    when: emboss_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/EMBOSS-6.4.0.tar.gz"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: configure emboss
+    shell: "cd {{ app_location }}/EMBOSS-6.4.0; ./configure --prefix={{ app_location }}/EMBOSS-6.4.0/"
+    when: emboss_exist.stat.exists == False
+
+  - name: edit Makefile
+    shell: "cd {{ app_location }}/EMBOSS-6.4.0; sed -i 's/SUBDIRS = plplot ajax nucleus emboss test doc jemboss/SUBDIRS = plplot ajax nucleus emboss test doc/g' Makefile"
+    when: emboss_exist.stat.exists == False
+
+  - name: make emboss
+    shell: "cd {{ app_location }}/EMBOSS-6.4.0; make"
+    when: emboss_exist.stat.exists == False
+
+  - name: install emboss
+    shell: "cd {{ app_location }}/EMBOSS-6.4.0; make install"
+    when: emboss_exist.stat.exists == False
+
+  - name: make emboss executable
+    shell: 'cd {{ app_location }}/EMOBSS-6.4.0/bin/; chmod uog+x *'
+    when: emboss_exist.stat.exists == False
+
+  - name: remove emoboss tar.gz
+    when: emboss_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/EMBOSS-6.4.0.tar.gz"
+
+  - name: Check if ffpred is installed
+    stat: path={{ app_location }}/ffpred3
+    register: ffpred_exist
+
+  - name : Check Out FFPRED from GIT
+    when: ffpred_exist.stat.exists == False
+    git:
+      repo: https://github.com/psipred/FFPred4.git
+      dest: "{{ app_location }}/ffpred3"
+      clone: yes
+      force: yes
+
+  - name: Download ffpredSVMs
+    when: ffpred_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/ffpred/SVMs.tar.gz
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+  
+  - name: untar ffpred SVMs
+    when: ffpred_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/SVMs.tar.gz"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+      extra_opts: "-h"
+  
+  - name: remove SVM tarball
+    shell: "cd {{ app_location }}/; rm SVMs.tar.gz"
+    when: ffpred_exist.stat.exists == False
+
+  - name: Add SVMs symlink to ffpred dirname
+    when: ffpred_exist.stat.exists == False
+    file:
+      src: "{{ app_location }}/SVMs"
+      dest: "{{ app_location }}/ffpred3/SVMs"
+      state: link
+
+  - name: Check if svm_light is installed
+    stat: path={{ app_location }}/svm_light
+    register: svml_exist
+
+  - name: Download svm_light
+    when: svml_exist.stat.exists == False
+    get_url:
+      url: http://osmot.cs.cornell.edu/svm_light/v6.02/svm_light.tar.gz
+      dest: "{{ app_location }}/"
+      timeout: 120
+    register: get_url_result
+
+  - name: Creates directory
+    when: svml_exist.stat.exists == False
+    ansible.builtin.file:
+      path: "{{ app_location }}/svm_light/"
+      state: directory
+
+  - name: untar svm_light
+    when: svml_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/svm_light.tar.gz"
+      dest: "{{ app_location }}/svm_light/"
+      remote_src: yes
+
+  - name: copy over the patched svm_hideo
+    when: svml_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env }}/ffpred/svm_hideo.c
+      dest: "{{ app_location }}/svm_light/"
+      mode: "uog+x"
+
+  - name: make svm_light
+    when: svml_exist.stat.exists == False
+    shell: 'cd {{ app_location }}/svm_light; make'
+
+  - name: copy over the CONFIG
+    when: svml_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env }}/ffpred/CONFIG
+      dest: "{{ app_location }}/ffpred3"
+      mode: "uog+x"
+
+  - name: remove svmlight tar.gz
+    when: svml_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/svm_light.tar.gz"

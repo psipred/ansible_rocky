@@ -1,8 +1,6 @@
 ---
 # ansible-playbook -i staging deploy_staging.yml -f 1
-#
 #  WARNING! YOU MUST HAVE A COMPLETE secrets/
-#  YOU MUST HAVE files/jdk-8u60-linux-x64.tar.gz
 
 # - name: Set up mount point
 #   hosts: everyone
@@ -56,17 +54,17 @@
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
 
-- name: Create blastmachine
-  hosts: blastmachine
-  become: true
-  become_user: root
-  become_method: sudo
-  roles:
-    # - djangomachine
-    - blastmachine
-    # - blastworkers
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Create blastmachine
+#   hosts: blastmachine
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   roles:
+#     - djangomachine
+#     - blastmachine
+#     - blastworkers
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Create blast_cache machine
 #   hosts: blast_cache
@@ -105,10 +103,9 @@
     # - merizo
     # - dmpfold2
     # - s4pred
-    # - ffpred
+    - ffpred
   vars_files:
    - secrets/staging_secrets.yaml
-# don't forget the bits form bioserf
 
 # - name: Create blast update machine
 #   hosts: blastupdate
