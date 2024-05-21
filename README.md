@@ -31,7 +31,6 @@ as the current setup and the staging setup
 ```
 
 
-
 ## Notes on creating passwords with openssl
 
 1. create a salt
