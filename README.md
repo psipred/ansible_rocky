@@ -11,10 +11,10 @@ Hopefully this will be a new and united ansible for both our production and stag
 
 
 ``` bash
-> ansible-playbook -i staging_hosts --extra-vars "my_env=staging" deploy_staging.yml
+> ansible-playbook -i staging_hosts --extra-vars "my_env=staging" deploy.yml
 ```
 
-## Installing on Prodcution
+## Installing on Production
 
 ### TODO
 
@@ -27,7 +27,7 @@ as the current setup and the staging setup
 
 
 ``` bash
-> ansible-playbook -i staging_hosts --extra-vars "my_env=production" deploy_staging.yml
+> ansible-playbook -i production_hosts --extra-vars "my_env=production" deploy.yml
 ```
 
 

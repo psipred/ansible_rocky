@@ -1,5 +1,4 @@
 ---
-# ansible-playbook -i staging deploy_staging.yml -f 1
 #  WARNING! YOU MUST HAVE A COMPLETE secrets/
 
 # - name: Set up mount point

@@ -1,0 +1,43 @@
+# bioinfnew1 : 128.16.4.118 - webserver, react server
+# bioinfnew2 : 128.16.4.112 - db, redis, cache
+# bioinfnew3 : 128.16.4.102 - aa head
+# blastmonster1 : 128.16.6.210 - blast workers
+# bm1 : 128.16.13.202
+# bm2 : 128.16.13.210
+# bm3 : 128.16.13.224
+# bm4 : TBC
+
+[dbserver]
+128.16.4.112
+
+[redis]
+128.16.4.112
+
+[blast_cache]
+128.16.4.112
+
+[webserver]
+128.16.4.118
+
+[aa_head]
+128.16.4.102
+
+# [blastmachine]
+# 128.16.6.210
+# 128.16.13.202
+
+# [celery_worker_node]
+# 128.16.13.210
+
+# [blastupdate]
+# 128.16.6.210
+# 128.16.13.224
+
+[everyone]
+128.16.4.118
+128.16.4.112
+128.16.4.102
+#128.16.6.210
+#128.16.13.202
+#128.16.13.210
+#128.16.13.224
