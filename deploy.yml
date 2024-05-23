@@ -1,15 +1,15 @@
 ---
 #  WARNING! YOU MUST HAVE A COMPLETE secrets/
 
-# - name: Set up mount point
-#   hosts: everyone
-#   become: true
-#   become_user: dbuchan
-#   become_method: sudo
-#   roles:
-#     - global
-#   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml
+- name: Set up mount point
+  hosts: everyone
+  become: true
+  become_user: dbuchan
+  become_method: sudo
+  roles:
+    - global
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Apply the redis configuration
 #   hosts: redis
@@ -21,16 +21,16 @@
 #   vars_files:
 #    - secrets/{{ my_env }}_secrets.yaml
 
-- name: Install frontend
-  hosts: webserver
-  become: true
-  become_user: dbuchan
-  become_method: sudo
-  roles:
-    # - djangomachine
-    - psipredreact
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Install frontend
+#   hosts: webserver
+#   become: true
+#   become_user: dbuchan
+#   become_method: sudo
+#   roles:
+#     # - djangomachine
+#     - psipredreact
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Apply the postgres configuration
 #   hosts: dbserver
