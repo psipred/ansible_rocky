@@ -29,7 +29,6 @@
     command: firewall-cmd --zone=public --add-forward-port=port=443:proto=tcp:toport=4433 --permanent
     become_user: root
     become_method: sudo
-
     when: firewalldrules.stdout.find("http") == -1
 
   - name: Reload firewalld

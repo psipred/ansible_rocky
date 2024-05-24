@@ -1,3 +1,32 @@
+---
+
+  - name: Install httpd
+    dnf:
+      pkg: httpd, httpd-devel
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Install VirtualEnv
+    dnf:
+      pkg: python-virtualenv
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Install VirtualEnv
+    dnf:
+      pkg: python-virtualenv
+      state: latest
+    become_user: root
+    become_method: sudo
+
+  - name: Install virtualenvwrapper
+    ansible.builtin.pip:
+      name: virtualenvwrapper
+    become_user: root
+    become_method: sudo
+
   - name: Get the current firewalld rules
     shell: firewall-cmd --list-all
     register: firewalldrules
@@ -43,7 +72,7 @@
   - name: Copy httpd conf
     become_user: root
     copy:
-      src: files/psipred_react_httpd.conf
+      src: files/{{ my_env }}/psipred_react_httpd.conf
       dest: /etc/httpd/conf/httpd.conf
       owner: root
 
