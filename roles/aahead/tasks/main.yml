@@ -171,15 +171,15 @@
     become_user: "{{ django_aa_user }}"
     # when: aa_running.stdout.find("httpd (mod_wsgi-express)") == -1
 
-  # - name: copy over the aa head service
-  #   become_user: root
-  #   become_method: sudo
-  #   copy:
-  #     src: files/aahead.service
-  #     dest: /etc/systemd/system/
-  #     mode: "uog+x"
+  - name: copy over the aa head service
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/aahead.service
+      dest: /etc/systemd/system/
+      mode: "uog+x"
 
-  # - name: Add service to systemctl
-  #   become_user: root
-  #   become_method: sudo
-  #   shell: systemctl enable aahead.service
+  - name: Add service to systemctl
+    become_user: root
+    become_method: sudo
+    shell: systemctl enable aahead.service

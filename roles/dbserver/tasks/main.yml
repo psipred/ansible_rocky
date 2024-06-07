@@ -148,10 +148,15 @@
       name: hstore
 
 # This systemd service is not working right
-  # - name: copy over the postgresql systemd service
-  #   copy:
-  #     src: files/postgresql.service
-  #     dest: /etc/systemd/system/multi-user.target.wants/
-  #     mode: "uog+x"
-  #   become_user: root
-  #   become_method: sudo
+  - name: copy over the postgresql systemd service
+    copy:
+      src: files/{{ my_env }}/postgresql.service
+      dest: /etc/systemd/system/
+      mode: "uog+x"
+    become_user: root
+    become_method: sudo
+
+  - name: Add service to systemctl
+    shell: systemctl enable postgresql.service
+    become_user: root
+    become_method: sudo

@@ -41,16 +41,16 @@
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
 
-# - name: Apply Analytics Automated head node configuration
-#   hosts: aa_head
-#   become: true
-#   become_user: dbuchan
-#   become_method: sudo
-#   roles:
-#     - djangomachine
-#     - aahead
-#   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml
+- name: Apply Analytics Automated head node configuration
+  hosts: aa_head
+  become: true
+  become_user: dbuchan
+  become_method: sudo
+  roles:
+    # - djangomachine
+    - aahead
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Create blastmachine
 #   hosts: blastmachine
@@ -64,18 +64,18 @@
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
 
-- name: Create blast_cache machine
-  hosts: blast_cache
-  become: true
-  become_user: root
-  become_method: sudo
-  roles:
-    - role: djangomachine
-      when: my_env is match ("production")
-    - role: blastcache
-      when: my_env is match ("production")
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Create blast_cache machine
+#   hosts: blast_cache
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   roles:
+#     - role: djangomachine
+#       when: my_env is match ("production")
+#     - role: blastcache
+#       when: my_env is match ("production")
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 
 # mempack won't compile in OSX
 # domThreader seg faults in OSX
