@@ -166,6 +166,15 @@
       chdir: "{{ django_aa_home }}analytics_automated"
     become_user: "{{ django_aa_user }}"
 
+  - name: copy aa httpd conf
+    become_user: root
+    become_method: sudo
+    when: my_env is match ("production")
+    copy:
+      src: files/{{ my_env }}/httpd.conf
+      dest: /opt/aa_httpd
+      mode: "uog+x"
+
   - name : Start aa
     shell: "/opt/aa_httpd/apachectl restart"
     become_user: "{{ django_aa_user }}"
