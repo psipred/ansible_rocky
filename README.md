@@ -48,3 +48,19 @@ as the current setup and the staging setup
 ## Notes on /etc/sudoers
 
 Fresh machines from TSG have a fixed sudoers file and changes will be lost at midnight each day. Email requests with any permenant changes you want to make to /etc/sudoer
+
+## Running some production tests
+
+On bm1 and bm3 start a pool of 2 workers using ~/analytics_automated_alt/
+
+``` bash
+celery --app=analyticsomated_project.celery:app worker --loglevel=INFO -Q low_localhost,localhost,high_localhost,celery,low_R,R,high_R,low_Python,Python,high_Python --pidfile=celery.pid --concurrency=2
+```
+``` bash
+celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q celery,blast,low_blast,high_blast --concurrency=2 --pidfile=celery.pid
+```
+
+Don't for get to put things back on bioinfnew1
+
+1. copy index_production.html over index_production_alt.html on the fronend
+
