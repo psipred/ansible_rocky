@@ -50,13 +50,6 @@
     become_user: root
     become_method: sudo
 
-  - name: Install VirtualEnv
-    dnf:
-      pkg: python-virtualenv
-      state: latest
-    become_user: root
-    become_method: sudo
-
   - name: Install virtualenvwrapper
     ansible.builtin.pip:
       name: virtualenvwrapper
