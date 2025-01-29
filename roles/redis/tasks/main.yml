@@ -12,7 +12,7 @@
     become_method: sudo
     copy:
       src: secrets/redis.conf
-      dest: /etc/redis.conf
+      dest: /etc/redis/redis.conf
       mode: "u+rx"
 
   - name: "Add {{ redis_user }} user"
@@ -41,6 +41,9 @@
   - name: Check redis-server status
     shell: ps aux | grep redis-server
     register: redis_running
+
+  - name: Check redis-server status
+    shell: sysctl vm.overcommit_memory=1
 
   - name: copy over the redis systemd service
     become_user: root
