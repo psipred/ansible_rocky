@@ -87,8 +87,8 @@
   become_method: sudo
   roles:
     # - djangomachine
-    - aaworker
-    # - psipred
+    # - aaworker
+    - psipred
     # - disopred
     # - memsatsvm
     # - pGenTHREADER 
