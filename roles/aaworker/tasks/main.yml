@@ -12,6 +12,11 @@
     become_method: sudo
 
   - name: Install Dependencies
+    shell: dnf -y module install nvidia-driver:latest-dkms
+    become_user: root
+    become_method: sudo
+
+  - name: Install Dependencies
     dnf:
       pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11, cuda-11-8
       state: latest
@@ -61,19 +66,19 @@
       virtualenv: "{{ django_worker_home }}aa_env"
       virtualenv_command: /bin/virtualenv
       virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
-      requirements: "{{ django_worker_home }}analytics_automated/requirements/staging.txt"
+      requirements: "{{ django_worker_home }}analytics_automated/requirements/{{ my_env }}.txt"
 
-  - name: Copy aa staging_conf
+  - name: Copy aa {{ my_env }}_conf
     become_user: "{{ django_worker_user }}"
     copy:
-      src: secrets/staging_worker.py
-      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/staging.py"
+      src: secrets/{{ my_env }}_worker.py
+      dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/{{ my_env }}.py"
       owner: "{{ django_worker_user }}"
 
-  - name: Copy aa staging secrets
+  - name: Copy aa {{ my_env }} secrets
     become_user: "{{ django_worker_user }}"
     copy:
-      src: secrets/staging_worker_secrets.json
+      src: secrets/{{ my_env }}_worker_secrets.json
       dest: "{{ django_worker_home }}/analytics_automated/analytics_automated_project/settings/"
       owner: "{{ django_worker_user }}"
 
