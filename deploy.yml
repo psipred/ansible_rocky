@@ -88,8 +88,8 @@
   roles:
     # - djangomachine
     # - aaworker
-    - psipred
-    # - disopred
+    # - psipred
+    - disopred
     # - memsatsvm
     # - pGenTHREADER 
     # - model_parts 
