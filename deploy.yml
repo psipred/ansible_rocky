@@ -86,24 +86,26 @@
   become_user: root
   become_method: sudo
   roles:
-    # - djangomachine
-    # - aaworker
-    - psipred
-    - disopred
-    - memsatsvm
-    - pGenTHREADER 
-    - model_parts 
-    - dompred 
-    - mempack
-    - metsite
-    - hspred
-    - memembed
-    - dmp
-    - dmpmetal
-    - merizo
-    - dmpfold2
-    - s4pred
-    - ffpred
+    - djangomachine
+    - aaworker
+    # - psipred
+    # - disopred
+    # - memsatsvm
+    # - pGenTHREADER 
+    # - model_parts 
+    # - dompred 
+    # - mempack
+    # - metsite
+    # - hspred
+    # - memembed
+    # - dmp
+    # - dmpmetal
+    # - merizo
+    # - dmpfold2
+    # - s4pred
+    # - ffpred
+    # - merizosearch
+    # - gsrcl
   vars_files:
    - secrets/staging_secrets.yaml
 

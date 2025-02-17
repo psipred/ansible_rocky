@@ -6,9 +6,9 @@ Hopefully this will be a new and united ansible for both our production and stag
 ## Installing on staging
 
 
-1.  Do not forget to add your ssh credentials to the machines!
+1.  Do not forget to add your ssh credentials to the machines! And passwordless sudo
 
-
+%wheel bioinfnew2 = (ALL) NOPASSWD: ALL
 
 ``` bash
 > ansible-playbook -i staging_hosts --extra-vars "my_env=staging" deploy.yml
