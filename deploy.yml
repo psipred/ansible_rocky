@@ -107,7 +107,7 @@
     # - merizosearch
     # - gsrcl
   vars_files:
-   - secrets/staging_secrets.yaml
+   - secrets/{{ my_env }}_secrets.yaml
 
 ## Can only be run if server update is public
 ## Could probably use inline to add in the slack webhooks from secrets rather than keeping them in the repo
