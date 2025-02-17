@@ -89,8 +89,8 @@
     # - djangomachine
     # - aaworker
     # - psipred
-    - disopred
-    # - memsatsvm
+    # - disopred
+    - memsatsvm
     # - pGenTHREADER 
     # - model_parts 
     # - dompred 
