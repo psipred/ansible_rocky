@@ -90,8 +90,8 @@
     # - aaworker
     # - psipred
     # - disopred
-    - memsatsvm
-    # - pGenTHREADER 
+    # - memsatsvm
+    - pGenTHREADER 
     # - model_parts 
     # - dompred 
     # - mempack
