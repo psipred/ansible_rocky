@@ -28,4 +28,4 @@
 
   - name: wget the PDB
     when: pdb_path_exist.stat.exists == False
-    shell: "cd {{ data _location }}/pdb; wget -r -nd --tries=10 ftp://ftp.ebi.ac.uk/pub/databases/msd/pdb_uncompressed/;"
+    shell: "cd {{ data _location }}/pdb; wget -r -nd --tries=10 {% raw %}ftp://ftp.ebi.ac.uk/pub/databases/msd/pdb_uncompressed/{% endraw %}"
