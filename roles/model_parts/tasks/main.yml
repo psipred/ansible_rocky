@@ -21,7 +21,7 @@
   - name: make PDB dir
     when: pdb_path_exist.stat.exists == False
     file:
-      path: /src/www
+      path: "{{ data_location }}/pdb/"
       state: directory
       mode: 0666
       recurse: yes
