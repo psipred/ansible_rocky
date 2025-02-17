@@ -86,8 +86,8 @@
   become_user: root
   become_method: sudo
   roles:
-    - djangomachine
-    # - aaworker
+    # - djangomachine
+    - aaworker
     # - psipred
     # - disopred
     # - memsatsvm
