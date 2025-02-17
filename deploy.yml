@@ -1,15 +1,15 @@
 ---
 #  WARNING! YOU MUST HAVE A COMPLETE secrets/
 
-- name: Set up mount point
-  hosts: everyone
-  become: true
-  become_user: dbuchan
-  become_method: sudo
-  roles:
-    - global
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Set up mount point
+#   hosts: everyone
+#   become: true
+#   become_user: dbuchan
+#   become_method: sudo
+#   roles:
+#     - global
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Apply the redis configuration
 #   hosts: redis
@@ -80,34 +80,34 @@
 # mempack won't compile in OSX
 # domThreader seg faults in OSX
 
-# - name: Create Celery worker node
-#   hosts: celery_worker_node
-#   become: true
-#   become_user: root
-#   become_method: sudo
-#   roles:
-#     - djangomachine
-#     - aaworker
-#     # - psipred
-#     # - disopred
-#     # - memsatsvm
-#     # - pGenTHREADER 
-#     # - model_parts 
-#     # - dompred 
-#     # - mempack
-#     # - metsite
-#     # - hspred
-#     # - memembed
-#     # - dmp
-#     # - dmpmetal
-#     # - merizo
-#     # - dmpfold2
-#     # - s4pred
-#     # - ffpred
-#     # - merizosearch
-#     # - gsrcl
-#   vars_files:
-#    - secrets/{{ my_env }}_secrets.yaml
+- name: Create Celery worker node
+  hosts: celery_worker_node
+  become: true
+  become_user: root
+  become_method: sudo
+  roles:
+    - djangomachine
+    - aaworker
+    # - psipred
+    # - disopred
+    # - memsatsvm
+    # - pGenTHREADER 
+    # - model_parts 
+    # - dompred 
+    # - mempack
+    # - metsite
+    # - hspred
+    # - memembed
+    # - dmp
+    # - dmpmetal
+    # - merizo
+    # - dmpfold2
+    # - s4pred
+    # - ffpred
+    # - merizosearch
+    # - gsrcl
+  vars_files:
+   - secrets/{{ my_env }}_secrets.yaml
 
 ## Can only be run if server update is public
 ## Could probably use inline to add in the slack webhooks from secrets rather than keeping them in the repo
