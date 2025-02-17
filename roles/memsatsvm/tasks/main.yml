@@ -53,7 +53,7 @@
     when: memsat_exist.stat.exists == False
     unarchive:
       src: "{{ app_location }}/memsat-svm/models.tar.gz"
-      dest: "{{ app_location }}/memsat-svm/""
+      dest: "{{ app_location }}/memsat-svm/"
       remote_src: yes
 
   - name: make binaries
