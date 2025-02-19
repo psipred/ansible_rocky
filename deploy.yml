@@ -104,7 +104,7 @@
     # - dmpfold2
     # - s4pred
     # - ffpred
-    # - merizosearch
+    - merizosearch
     # - gsrcl
   vars_files:
    - secrets/{{ my_env }}_secrets.yaml
