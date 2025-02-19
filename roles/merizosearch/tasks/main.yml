@@ -21,9 +21,5 @@
     virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
 
 - name: Download foldclass db
-  when: merizo_exist.stat.exists == False
-  get_url:
-    url: https://rdr.ucl.ac.uk/ndownloader/articles/26348605/versions/2
-    dest: "{{ app_location }}/foldclass/foldclass_complete.zip"
-    timeout: 120
-  register: get_url_result
+  # when: merizo_exist.stat.exists == False
+  shell: "cd /data/; wget https://rdr.ucl.ac.uk/ndownloader/articles/26348605/versions/2 -O foldclass.zip"
