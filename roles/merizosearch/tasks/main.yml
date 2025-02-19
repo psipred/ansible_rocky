@@ -1,0 +1,24 @@
+- name: Check merizo_search is present
+  stat: path=/opt/merizo_search
+  register: merizo_exist
+
+- name: Check out merizo_search from GIT
+  when: merizo_exist.stat.exists == False
+  git:
+    repo: https://github.com/psipred/merizo_search.git
+    dest: "{{ app_location }}/merizo_search"
+    clone: yes
+    force: yes
+
+- name: Install requirements
+  become_user: "{{ django_worker_user }}"
+  pip:
+    name: faiss-cpu
+    state: latest
+    chdir: "{{ django_worker_home }}"
+    virtualenv: "{{ django_worker_home }}aa_env"
+    virtualenv_command: /bin/virtualenv
+    virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
+
+# We'll install torch with dmpmetal instead
+

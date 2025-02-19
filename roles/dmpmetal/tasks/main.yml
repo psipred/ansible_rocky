@@ -19,7 +19,7 @@
       virtualenv: "{{ django_worker_home }}aa_env"
       virtualenv_command: /bin/virtualenv
       virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
-      requirements: "{{ app_location }}/DMPmetal/requirements_web.txt"
+      requirements: "{{ app_location }}/DMPmetal/requirements/requirements_web.txt"
 
   - name: Install flash-attn
     when: dmpmetal_exist.stat.exists == False
@@ -32,8 +32,9 @@
       virtualenv: "{{ django_worker_home }}aa_env"
       virtualenv_command: /bin/virtualenv
       virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
-      name: flash-attn
+      name: flash-attn==2.5.5
       
+
   - name: Download dmpmetal weights
     when: dmpmetal_exist.stat.exists == False
     get_url:

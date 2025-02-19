@@ -1,0 +1,12 @@
+---
+#  WARNING! YOU MUST HAVE A COMPLETE secrets/
+
+- name: Install frontend
+  hosts: webserver
+  become: true
+  become_user: dbuchan
+  become_method: sudo
+  roles:
+    - psipredreact
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml

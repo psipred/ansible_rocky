@@ -92,7 +92,7 @@
     # - disopred
     # - memsatsvm
     # - pGenTHREADER 
-    - model_parts 
+    # - model_parts 
     # - dompred 
     # - mempack
     # - metsite
@@ -103,7 +103,7 @@
     # - merizo
     # - dmpfold2
     # - s4pred
-    # - ffpred
+    - ffpred
     # - merizosearch
     # - gsrcl
   vars_files:

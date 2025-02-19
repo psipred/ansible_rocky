@@ -195,7 +195,7 @@
       dest: "{{ app_location }}/"
       remote_src: yes
 
-  - name: copy over the configured runWold.sh script
+  - name: copy over the configured runWolf.sh script
     when: psort_exist.stat.exists == False
     become_user: root
     become_method: sudo
@@ -287,7 +287,7 @@
     when: emboss_exist.stat.exists == False
 
   - name: make emboss executable
-    shell: 'cd {{ app_location }}/EMOBSS-6.4.0/bin/; chmod uog+x *'
+    shell: 'cd {{ app_location }}/EMBOSS-6.4.0/bin/; chmod uog+x *'
     when: emboss_exist.stat.exists == False
 
   - name: remove emoboss tar.gz
