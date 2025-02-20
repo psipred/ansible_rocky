@@ -1,5 +1,5 @@
 - name: Check merizo_search is present
-  stat: path=/opt/merizo_search
+  stat: path={{ app_location }}/merizo_search
   register: merizo_exist
 
 - name: Check out merizo_search from GIT
@@ -21,5 +21,15 @@
     virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
 
 - name: Download foldclass db
-  # when: merizo_exist.stat.exists == False
-  shell: "cd /data/; wget https://rdr.ucl.ac.uk/ndownloader/articles/26348605/versions/2 -O foldclass.zip"
+  when: merizo_exist.stat.exists == False
+  shell: "cd {{ app_location }}; wget https://rdr.ucl.ac.uk/ndownloader/articles/26348605/versions/2 -O foldclass.zip"
+
+- name: unzip foldclass db
+  when: merizo_exist.stat.exists == False
+  shell: "cd {{app_location}}; unzip foldclass.zip"
+
+- name: Remove foldclassdb zip
+  when: merizo_exist.stat.exists == False
+  ansible.builtin.file:
+    path: "{{ app_location }}/foldclass.zip"
+    state: absent
