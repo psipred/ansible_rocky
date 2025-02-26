@@ -20,16 +20,98 @@
     virtualenv_command: /bin/virtualenv
     virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
 
-- name: Download foldclass db
-  when: merizo_exist.stat.exists == False
-  shell: "cd {{ app_location }}; wget https://rdr.ucl.ac.uk/ndownloader/articles/26348605/versions/2 -O foldclass.zip"
-
-- name: unzip foldclass db
-  when: merizo_exist.stat.exists == False
-  shell: "cd {{app_location}}; unzip foldclass.zip"
-
-- name: Remove foldclassdb zip
-  when: merizo_exist.stat.exists == False
+- name: Creates cath ms directory
   ansible.builtin.file:
-    path: "{{ app_location }}/foldclass.zip"
-    state: absent
+    path: "{{ app_location }}/cath-4.3-foldclassdb"
+    state: directory
+
+- name: Creates ted ms directory
+  ansible.builtin.file:
+    path: "{{ app_location }}/TED"
+    state: directory
+
+- name: Download cath foldclass db
+  when: merizo_exist.stat.exists == False
+  shell: "cd {{ app_location }}/merizo_search; bash download_dbs.sh cath {{ app_location }}/cath-4.3-foldclassdb/"
+
+- name: Download ted foldclass db
+  when: merizo_exist.stat.exists == False
+  shell: "cd {{ app_location }}/merizo_search; bash download_dbs.sh ted {{ app_location }}/TED/"
+
+- name: Copy ted.json
+  copy:
+    src: files/{{ my_env }}/ted.json
+    dest: "{{ app_location }}/merizo_search/examples/database"
+
+- name: create cath index symlink
+  file:
+    src: "{{ app_location }}/cath-4.3-foldclassdb/cath-4.3-foldclassdb.index"
+    dest: "{{ app_location }}/merizo_search/examples/database/cath.index"
+    state: link
+
+- name: create cath metadata symlink
+  file:
+    src: "{{ app_location }}/cath-4.3-foldclassdb/cath-4.3-foldclassdb.metadata"
+    dest: "{{ app_location }}/merizo_search/examples/database/cath.metadata"
+    state: link
+
+- name: create cath metadata.index symlink
+  file:
+    src: "{{ app_location }}/cath-4.3-foldclassdb/cath-4.3-foldclassdb.metadata.index"
+    dest: "{{ app_location }}/merizo_search/examples/database/cath.metadata.index"
+    state: link
+  
+- name: create cath pt symlink
+  file:
+    src: "{{ app_location }}/cath-4.3-foldclassdb/cath-4.3-foldclassdb.pt"
+    dest: "{{ app_location }}/merizo_search/examples/database/cath.pt"
+    state: link
+
+- name: create ted ca.db
+  file:
+    src: "{{ app_location }}/TED/ted_365M_ca.db"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_ca.db"
+    state: link
+
+- name: create ted ca.index
+  file:
+    src: "{{ app_location }}/TED/ted_365M_ca.index"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_ca.index"
+    state: link
+
+- name: create ted metadata.db
+  file:
+    src: "{{ app_location }}/TED/ted_365M_metadata.db"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_metadata.db"
+    state: link
+
+- name: create ted metadata.index
+  file:
+    src: "{{ app_location }}/TED/ted_365M_metadata.index"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_metadata.index"
+    state: link
+
+- name: create ted _128d.index_names
+  file:
+    src: "{{ app_location }}/TED/ted_365M_raw_128d.index_names"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_raw_128d.index_names"
+    state: link
+
+- name: create ted _128d_norm.db
+  file:
+    src: "{{ app_location }}/TED/ted_365M_raw_128d_norm.db"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_raw_128d_norm.db"
+    state: link
+
+- name: create ted _seq.db
+  file:
+    src: "{{ app_location }}/TED/ted_365M_seq.db"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_seq.db"
+    state: link
+
+- name: create ted _seq.index
+  file:
+    src: "{{ app_location }}/TED/ted_365M_seq.index"
+    dest: "{{ app_location }}/merizo_search/examples/database/ted_seq.index"
+    state: link
+
