@@ -21,7 +21,7 @@
     become_user: root
 
   - name: get colorRamps
-    shell:  "chdir={{ app_location }}/ wget https://cran.r-project.org/src/contrib/Archive/colorRamps/colorRamps_2.3.4.tar.gz"
+    shell:  "chdir={{ app_location }}/ wget https://cran.r-project.org/src/contrib/colorRamps_2.3.4.tar.gz"
 
   - name: install colorRamps
     shell: "chdir={{ app_location }}/ R CMD INSTALL colorRamps_2.3.4.tar.gz"
@@ -41,3 +41,111 @@
     ansible.builtin.file:
       state: absent
       path: "{{ app_location }}/colorRamps_2.3.4.tar.gz"
+
+  - name: make binaries
+    shell: "cd {{ app_location}}//DeepMetaPSICOV/src; make"
+
+  - name: install binaries
+    shell: "cd {{ app_location}}//DeepMetaPSICOV/src; make install"
+  
+  - name: clone psicov
+    git:
+      repo: https://github.com/psipred/psicov.git
+      dest: "{{ app_location }}/psicov"
+      clone: yes
+      force: yes
+
+  - name: make psicov binaries
+    shell: "cd {{ app_location}}//psicov/src; make"
+
+  - name: Copy a psicov binary to location
+    ansible.builtin.copy:
+      src: "{{ app_location}}//psicov/src/psicov"
+      dest: "{{ app_location}}//psicov/bin/psicov"
+      remote_src: yes
+
+  - name: check we have blas
+    stat: path="{{ app_location}}/OpenBlas"
+    register: blas_exist
+
+  - name : Check out blas from GIT
+    when: blas_exist.stat.exists == False
+    git:
+      repo: https://github.com/xianyi/OpenBLAS.git
+      dest: "{{ app_location}}/OpenBlas"
+      clone: yes
+      force: yes
+
+  - name: make OpenBlas
+    when: blas_exist.stat.exists == False
+    shell: "cd {{ app_location}}/OpenBlas; make"
+
+  - name: install OpenBlas
+    when: blas_exist.stat.exists == False
+    shell: "cd {{ app_location}}/OpenBlas/; make install"
+
+  - name: check we have ccmpred
+    stat: path="{{ app_location}}/CCMpred"
+    register: ccmpred_exist
+
+  - name : Check out ccmpred from GIT
+    when: ccmpred_exist.stat.exists == False
+    git:
+      repo: https://github.com/soedinglab/CCMpred
+      recursive: yes
+      dest: "{{ app_location}}/CCMpred"
+      clone: yes
+      force: yes
+
+  - name: cmake ccmpred
+    when: ccmpred_exist.stat.exists == False
+    shell: "cd {{ app_location}}/CCMpred; /usr/bin/cmake -Wno-dev -DWITH_CUDA=OFF ."
+
+  - name: make ccmpred
+    when: ccmpred_exist.stat.exists == False
+    shell: "cd {{ app_location}}/CCMpred/; make"
+
+  - name: Install freecontact dependencies
+    yum:
+     pkg: lapack, lapack-devel, lapack64, openblas-devel
+     state: latest
+
+  - name: check we have FreeContact
+    stat: path={{ app_location}}/freecontact-1.0.21
+    register: freecontact_exist
+
+  - name: get freecontact
+    when: freecontact_exist.stat.exists == False
+    get_url:
+      url: http://bioinfadmin.cs.ucl.ac.uk/downloads/freecontact/freecontact-1.0.21.tar.xz
+      dest:  "{{ app_location}}"
+      timeout: 120
+    register: get_url_result
+    # until: get_url_result.stdout.find("Unable to establish SSL connection") == -1
+    # retries: 2
+    # delay: 10
+
+  - name: unarchive freecontact
+    when: freecontact_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location}}/freecontact-1.0.21.tar.xz"
+      dest: "{{ app_location}}/"
+      remote_src: yes
+
+  - name: configure freecontact
+    when: freecontact_exist.stat.exists == False
+    shell: 'cd {{ app_location}}/freecontact-1.0.21/; ./configure CFLAGS=-I{{ app_location}}/OpenBLAS/include LIBS=-L{{ app_location}}/OpenBLAS/lib LDFLAGS=-L{{ app_location}}/OpenBLAS/lib CPPFLAGS=-I{{ app_location}}/OpenBLAS/include'
+
+   # - name: configure freecontact
+   #   when: freecontact_exist.stat.exists == False
+   #   shell: "cd {{ app_location}}/freecontact-1.0.21/; ./configure"
+     #run with env LD_LIBRARY_PATH={{ app_location}}/OpenBLAS/lib/ src/freecontact
+
+  - name: cheat softlink
+    when: freecontact_exist.stat.exists == False
+    shell: "cd {{ app_location}}/freecontact-1.0.21/lib; for n in $(ls /usr/include/openblas/); do ln -sv /usr/include/openblas/$n $n; done"
+
+  - name: make freecontact
+    when: freecontact_exist.stat.exists == False
+    shell: "cd {{ app_location}}/freecontact-1.0.21/; make"
+    #run with env LD_LIBRARY_PATH={{ app_location}}/OpenBLAS/lib/ src/freecontact

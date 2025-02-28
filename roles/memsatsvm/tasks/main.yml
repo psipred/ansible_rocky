@@ -45,16 +45,22 @@
     when: memsat_exist.stat.exists == False
     get_url:
       url: http://bioinfadmin.cs.ucl.ac.uk/downloads/memsat-svm/models.tar.gz
-      dest: "{{ app_location }}/memsat-svm"
+      dest: "{{ app_location }}/memsat-svm-pore"
       timeout: 120
     register: get_url_result
 
   - name: untar memsat model data
     when: memsat_exist.stat.exists == False
     unarchive:
-      src: "{{ app_location }}/memsat-svm/models.tar.gz"
-      dest: "{{ app_location }}/memsat-svm/"
+      src: "{{ app_location }}/memsat-svm-pore/models.tar.gz"
+      dest: "{{ app_location }}/memsat-svm-pore/"
       remote_src: yes
 
   - name: make binaries
     shell: "cd {{ app_location }}/memsat-svm; make"
+  
+  - name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
+    ansible.builtin.file:
+      path: "{{ app_location }}/memsat-svm-pore/input"
+      state: touch
+      mode: u=rwx,g=rwx,o=rwx

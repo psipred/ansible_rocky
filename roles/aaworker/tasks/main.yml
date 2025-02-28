@@ -18,7 +18,7 @@
 
   - name: Install Dependencies
     dnf:
-      pkg: ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11, cuda-11-8
+      pkg: cmake, ffmpeg-free, ffmpeg-free-devel, java-1.8.0-openjdk, lmdb, ghostscript, ghostscript-x11, cuda-11-8, ruby
       state: latest
     become_user: root
     become_method: sudo

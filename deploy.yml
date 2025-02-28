@@ -86,25 +86,25 @@
   become_user: root
   become_method: sudo
   roles:
-    - djangomachine
-    - aaworker
-    - merizosearch # do these two first as they take the longest
-    - model_parts # do these two first as they take the longest
-    - psipred
-    - disopred
-    - memsatsvm
-    - pGenTHREADER 
-    - dompred 
-    - mempack
-    - metsite
-    - hspred
-    - memembed
+    # - djangomachine
+    # - aaworker
+    # - merizosearch # do these two first as they take the longest
+    # - model_parts # do these two first as they take the longest
+    # - psipred
+    # - disopred
+    # - memsatsvm
+    # - pGenTHREADER 
+    # - dompred 
+    # - mempack
+    # - metsite
+    # - hspred
+    # - memembed
     - dmp
-    - dmpmetal
-    - merizo
-    - dmpfold2
-    - s4pred
-    - ffpred
+    # - dmpmetal
+    # - merizo
+    # - dmpfold2
+    # - s4pred
+    # - ffpred
     # - gsrcl # TBC
   vars_files:
    - secrets/{{ my_env }}_secrets.yaml
