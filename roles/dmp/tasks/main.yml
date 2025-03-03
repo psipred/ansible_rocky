@@ -136,11 +136,6 @@
     when: freecontact_exist.stat.exists == False
     shell: 'cd {{ app_location}}/freecontact-1.0.21/; ./configure CFLAGS=-I{{ app_location}}/OpenBLAS/include LIBS=-L{{ app_location}}/OpenBLAS/lib LDFLAGS=-L{{ app_location}}/OpenBLAS/lib CPPFLAGS="--std=c++11 -I{{ app_location}}/OpenBLAS/include"'
 
-   # - name: configure freecontact
-   #   when: freecontact_exist.stat.exists == False
-   #   shell: "cd {{ app_location}}/freecontact-1.0.21/; ./configure"
-     #run with env LD_LIBRARY_PATH={{ app_location}}/OpenBLAS/lib/ src/freecontact
-
   - name: cheat softlink
     when: freecontact_exist.stat.exists == False
     shell: "cd {{ app_location}}/freecontact-1.0.21/lib; for n in $(ls /usr/include/openblas/); do ln -sv /usr/include/openblas/$n $n; done"
@@ -149,3 +144,15 @@
     when: freecontact_exist.stat.exists == False
     shell: "cd {{ app_location}}/freecontact-1.0.21/; make"
     #run with env LD_LIBRARY_PATH={{ app_location}}/OpenBLAS/lib/ src/freecontact
+
+  - name: alter permissions for fc src
+    ansible.builtin.file:
+      path: "{{ app_location }}/freecontact-1.0.21/src"
+      state: touch
+      mode: u=rw,g=rw,o=rw
+
+  - name: alter permissions for fc src libs
+    ansible.builtin.file:
+      path: "{{ app_location }}/freecontact-1.0.21/src/.libs"
+      state: touch
+      mode: u=rw,g=rw,o=rw
