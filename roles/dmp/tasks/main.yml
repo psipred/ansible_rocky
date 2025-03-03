@@ -149,10 +149,10 @@
     ansible.builtin.file:
       path: "{{ app_location }}/freecontact-1.0.21/src"
       state: touch
-      mode: u=rw,g=rw,o=rw
+      mode: u=rwx,g=rwx,o=rwx
 
   - name: alter permissions for fc src libs
     ansible.builtin.file:
       path: "{{ app_location }}/freecontact-1.0.21/src/.libs"
       state: touch
-      mode: u=rw,g=rw,o=rw
+      mode: u=rwx,g=rwx,o=rwx
