@@ -134,7 +134,7 @@
 
   - name: configure freecontact
     when: freecontact_exist.stat.exists == False
-    shell: 'cd {{ app_location}}/freecontact-1.0.21/; ./configure CFLAGS=-I{{ app_location}}/OpenBLAS/include LIBS=-L{{ app_location}}/OpenBLAS/lib LDFLAGS=-L{{ app_location}}/OpenBLAS/lib CPPFLAGS=--std=c++11 CPPFLAGS=-I{{ app_location}}/OpenBLAS/include'
+    shell: 'cd {{ app_location}}/freecontact-1.0.21/; ./configure CFLAGS=-I{{ app_location}}/OpenBLAS/include LIBS=-L{{ app_location}}/OpenBLAS/lib LDFLAGS=-L{{ app_location}}/OpenBLAS/lib CPPFLAGS="--std=c++11 -I{{ app_location}}/OpenBLAS/include"'
 
    # - name: configure freecontact
    #   when: freecontact_exist.stat.exists == False
