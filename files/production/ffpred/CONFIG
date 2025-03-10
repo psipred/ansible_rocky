@@ -24,6 +24,6 @@ PEST		        /cs/research/bioinf/home1/green/dbuchan/Code/FFPred4/packages/EMBO
 PATH            jobs
 DB              /scratch0/NOT_BACKED_UP/dbuchan/uniref/uniref_test_db/uniref_test.fasta
 MASK_DB         /scratch0/NOT_BACKED_UP/dbuchan/uniref/uniref_test_db/uniref_test.fasta
-SVMLIGHT        /opt/svm_light
+SVMLIGHT        /data/svm_light
 
 #------------------------------------------------------------------------------

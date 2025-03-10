@@ -1,0 +1,4 @@
+LD_LIBRARY_PATH for all torch things (s4pred, dmpfold2, dmpmetal, merizo, merizosearch)
+update hspred to use the resdef.dat
+
+blast+ location needs a symlink on new, then updated/removed once everything is work

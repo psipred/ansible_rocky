@@ -370,6 +370,10 @@
       src: "{{ app_location }}/SVMs"
       dest: "{{ app_location }}/ffpred3/SVMs"
       state: link
+  
+  - name: change permissions
+    shell: "cd {{ app_location }}/SVMs; chmod -R uog+rw *"
+    when: ffpred_exist.stat.exists == False  
 
   - name: Check if svm_light is installed
     stat: path={{ app_location }}/svm_light
