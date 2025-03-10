@@ -26,6 +26,10 @@
     become_user: root
     become_method: sudo
 
+  - name: Install Array::Base
+    community.general.cpanm:
+      name: Array::Base
+
   - name: Check if signalP is installed
     stat: path={{ app_location }}/signalp-4.1
     register: signalp_exist
@@ -126,6 +130,26 @@
       src: files/{{ my_env}}/ffpred/netNglyc
       dest: "{{ app_location }}/netNglyc-1.0"
       mode: "uog+x"
+
+  - name: copy over the configured test script
+    when: netnglyc_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env}}/ffpred/test
+      dest: "{{ app_location }}/netNglyc-1.0/Template/"
+      mode: "uog+x"
+
+  # https://squanderingti.me/blog/2020/10/28/extreme-debugging.html
+  - name: copy over the patched how script
+    when: netnglyc_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    copy:
+      src: files/{{ my_env}}/ffpred/how98_Linux
+      dest: "{{ app_location }}/netNglyc-1.0/how/"
+      mode: "uog+x"
+
 
   - name: remove netnglyc tar.gz
     when: netnglyc_exist.stat.exists == False
@@ -288,6 +312,18 @@
 
   - name: make emboss executable
     shell: 'cd {{ app_location }}/EMBOSS-6.4.0/bin/; chmod uog+x *'
+    when: emboss_exist.stat.exists == False
+
+  - name: make emboss writeable
+    shell: 'cd {{ app_location }}/; chmod uog+rwx EMBOSS-6.4.0/'
+    when: emboss_exist.stat.exists == False
+
+  - name: make emboss writeable 2
+    shell: 'cd {{ app_location }}/EMBOSS-6.4.0/; chmod uog+rwx emboss'
+    when: emboss_exist.stat.exists == False
+
+  - name: make emboss libs writeable 2
+    shell: 'cd {{ app_location }}/EMBOSS-6.4.0/emboss; chmod uog+rwx .libs'
     when: emboss_exist.stat.exists == False
 
   - name: remove emoboss tar.gz

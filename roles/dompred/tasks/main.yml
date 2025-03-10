@@ -37,6 +37,10 @@
       dest: "{{ app_location }}/dompred/"
       remote_src: yes
 
+  - name: untar dompred data
+    when: dompred_exist.stat.exists == False
+    shell: "cd {{ app_location }}/dompred/data; chmod uog+rw *"
+      
   - name: remove tar.gz
     when: dompred_exist.stat.exists == False
     ansible.builtin.file:
@@ -46,3 +50,28 @@
   - name: compile DomSSEA
     when: dompred_exist.stat.exists == False
     shell: cd {{ app_location }}/dompred/src; javac DomSSEA.java
+
+  - name: Check if  blast is installed
+    stat: path="{{ app_location }}/ncbi-blast-2.15.0+-src"
+    register: blastp_exist
+
+  - name: Download BLAST+ tarball
+    when: blastp_exist.stat.exists == False
+    get_url:
+      url: ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.15.0/ncbi-blast-2.15.0+-x64-linux.tar.gz
+      dest: "{{ app_location }}/ncbi-blast-2.15.0+-src"
+      timeout: 120
+    register: get_url_result
+
+  - name: unarchive blast
+    when: blastp_exist.stat.exists == False
+    unarchive:
+      src: "{{ app_location }}/ncbi-blast-2.15.0+-src.tar.gz"
+      dest: "{{ app_location }}/"
+      remote_src: yes
+
+  - name: remove blast tar.gz
+    when: blastp_exist.stat.exists == False
+    ansible.builtin.file:
+      state: absent
+      path: "{{ app_location }}/ncbi-blast-2.15.0+-x64-linux.tar.gz"

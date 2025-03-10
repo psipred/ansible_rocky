@@ -1,0 +1,83 @@
+#! /usr/bin/perl
+use Array::Base (1);
+#$[ = 1;                 # set array base to 1
+$, = ' ';               # set output field separator
+$\ = "\n";              # set output record separator
+
+$parameter_filename="test-parameters";
+open(PARAFILE,$parameter_filename) or die "Cant open parameter file $parameter_filename";
+$iceta=1;
+$ifull=-1;
+$lcompo=-1;
+$lenpos=-1;
+$lsize=-1;
+
+$lrnfileprefix="d-lrnset";
+$tstfileprefix="d-testset";
+
+# Run networks for each of the parameter sets.
+# < Needs to be parallelised> 
+while (<PARAFILE>) {
+	last if $_ =~ /^\n/;
+	# print $_;
+	next if substr($_,1,1) eq "#";
+	($testset,$winsize,$numhid,$epoch) = split(' ', $_, 9999);
+	$repeat = 1 unless $repeat;
+	next if substr($testset,1,1) eq "#";
+	# print "./test_how $testset $winsize $numhid $epoch";
+    system "./test_how $testset $winsize $numhid $epoch";
+}
+wait;
+
+seek PARAFILE,0,0;
+
+$paranum=1;
+while (<PARAFILE>) {
+	last if $_ =~ /^\n/;
+	next if substr($_,1,1) eq "#";
+	($testset,$winsize,$numhid,$epoch) = split(' ', $_, 9999);
+	$repeat = 1 unless $repeat;
+	next if substr($testset,1,1) eq "#";
+	$paranum++;
+	open(TMPFILE,"set$testset.win$winsize.hid$numhid.$epoch.test.out");
+	while (<TMPFILE>) {
+		chop;
+		($seqname,$pos,$dum1,$dum2,$dum3,$potential) = split(' ', $_, 9999);
+		$predict{$seqname}{$pos}[$paranum]=$potential;
+#		$wt_predict{$seqname}{$pos}[$paranum]=($potential-$min)/($max-$min);
+	$sequon{$seqname}{$pos-2}=1 if ($dum1 eq "S" || $dum1 eq "T"); # rg 11 dec 2001
+	$prolineX1{$seqname}{$pos-1}=1 if ($dum1 eq "P"); # rg 11 dec 2001
+	$prolineX2{$seqname}{$pos-3}=1 if ($dum1 eq "P"); # rg 11 dec 2001
+	$sequence{$seqname}[$pos]=$dum1; # rg experimental 18feb2002
+	}
+}
+
+seek TMPFILE,0,0;
+
+while (<TMPFILE>) {
+	chop;
+	($seqname,$pos,$dum1,$dum2,$dum3,$potential) = split(' ', $_, 9999);
+	$currpot=0;
+	$wt_currpot=0;
+	$all_yes=1;
+	$all_no=1;
+	$num_yes=0; # rg 4 mar 2002
+	$num_no=0;  # rg 4 mar 2002
+	for $n (1..9) {	
+		$predicted_potential = $predict{$seqname}{$pos}[$n];
+		$currpot += $predicted_potential; 
+		if ($predicted_potential < 0.5) {$all_yes=0 ; $num_no++};
+		if ($predicted_potential > 0.5) {$all_no=0 ; $num_yes++};
+#		$wt_currpot += $wt_predict{$seqname}{$pos}[$n]; 
+	}
+	$currpot = $currpot/9;
+#	$wt_currpot = $wt_currpot/9;
+	$sequence{$seqname}[$pos+3]="-" if !$sequence{$seqname}[$pos+3];  # right pad. rg 18feb2002 
+	printf "%-10s %4d %s %s  %6.4f %s %s %s %s %s %s %s %s %s %s\n", #%6.4f %6.3f %6.4f %6.4f\n", 
+		$seqname,$pos,$dum1,$dum2,$currpot, $all_yes, $all_no, (($all_yes==1 && "YES") || "-  "), (($all_no==1 && "NO") || "- "),
+		($dum1 eq "N" && $sequon{$seqname}{$pos} && "SEQUON") || "------",($prolineX1{$seqname}{$pos} && "PROLINE-XAA") || "-----------",
+		($prolineX2{$seqname}{$pos} && "PROLINE-X22") || "-----------", 
+		$sequence{$seqname}[$pos].$sequence{$seqname}[$pos+1].$sequence{$seqname}[$pos+2].$sequence{$seqname}[$pos+3],
+		$num_yes, $num_no		if ($dum1 eq "N");
+#		$wt_currpot,$surf{$seqname}{$pos}[1],$surf{$seqname}{$pos}[2],$surf{$seqname}{$pos}[3];
+}

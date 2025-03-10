@@ -99,12 +99,12 @@
     # - metsite
     # - hspred
     # - memembed
-    - dmp
+    # - dmp
     # - dmpmetal
     # - merizo
     # - dmpfold2
     # - s4pred
-    # - ffpred
+    - ffpred
     # - gsrcl # TBC
   vars_files:
    - secrets/{{ my_env }}_secrets.yaml
