@@ -1,4 +1,10 @@
-LD_LIBRARY_PATH for all torch things (s4pred, dmpfold2, dmpmetal, merizo, merizosearch)
-update hspred to use the resdef.dat
-
-blast+ location needs a symlink on new, then updated/removed once everything is work
+1. LD_LIBRARY_PATH for all torch things, python path needs fixing if you add this
+   s4pred * 
+   dmpfold2 *
+   dmpmetal * 
+   merizo *
+   merizosearch *
+   DMP *
+2. update hspred to use the resdef.dat - going to skip it unless we get complaints
+3. blast+ location needs a symlink on new, then updated/removed once everything is work
+4. add change imagemagick symlink
