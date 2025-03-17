@@ -50,6 +50,13 @@
     become_user: root
     become_method: sudo
 
+  - name: Install pip4
+    dnf:
+      pkg: python3-pip
+      state: latest
+    become_user: root
+    become_method: sudo
+
   - name: Install virtualenvwrapper
     ansible.builtin.pip:
       name: virtualenvwrapper
