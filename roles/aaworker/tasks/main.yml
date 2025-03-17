@@ -148,7 +148,7 @@
     when: submissions_type.stat.isdir is defined and submissions_type.stat.isdir and submissions_type.stat.islink is not defined and my_env is match ("production")
     file:
       src: /webdata/production_submissions
-      dest: "{{ django_aa_home }}/analytics_automated/production_submissions"
+      dest: "{{ django_aa_home }}/analytics_automated/submissions"
       state: link
       owner: "{{ django_aa_user }}"
       group: apache
