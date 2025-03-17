@@ -50,7 +50,7 @@
     become_user: root
     become_method: sudo
 
-  - name: Install pip4
+  - name: Install pip3
     dnf:
       pkg: python3-pip
       state: latest
