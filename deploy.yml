@@ -86,10 +86,10 @@
   become_user: root
   become_method: sudo
   roles:
-    - djangomachine
-    - aaworker
-    - merizosearch # do these two first as they take the longest
-    - model_parts # do these two first as they take the longest
+    # - djangomachine
+    # - aaworker
+    # - merizosearch # do these two first as they take the longest
+    # - model_parts # do these two first as they take the longest
     # - psipred
     # - disopred
     # - memsatsvm
@@ -105,7 +105,7 @@
     # - dmpfold2
     # - s4pred
     # - ffpred
-    # - gsrcl # TBC
+    - gsrcl # TBC
   vars_files:
    - secrets/{{ my_env }}_secrets.yaml
 

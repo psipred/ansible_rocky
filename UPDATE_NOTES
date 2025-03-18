@@ -8,3 +8,4 @@
 2. update hspred to use the resdef.dat - going to skip it unless we get complaints
 3. blast+ location needs a symlink on new, then updated/removed once everything is work
 4. add change imagemagick symlink
+5. The location of /data/bioserf/bin/make_fasta.py to /web_server_scripts/

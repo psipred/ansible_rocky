@@ -1,5 +1,5 @@
 - name: Check gsrcl is present
-  stat: path={{ app_location }}/s4pread
+  stat: path={{ app_location }}/gsrcl
   register: gsrcl_exist
   
 - name: Check out gsrcl from GIT
@@ -11,6 +11,7 @@
     force: yes
 
 - name: Install requirements
+  when: gsrcl_exist.stat.exists == False
   become_user: "{{ django_worker_user }}"
   pip:
     state: latest
@@ -18,7 +19,24 @@
     virtualenv: "{{ django_worker_home }}aa_env"
     virtualenv_command: /bin/virtualenv
     virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
-    requirements: "{{ app_location}}gsrcl/requirements/{{ my_env }}.txt"
+    requirements: "{{ app_location}}/gsrcl/requirements.txt"
+
+- name: remove symlink
+  ansible.builtin.file:
+    state: absent
+    path: "{{ app_location }}/gsrcl/data"
+
+- name: make weights dir
+  ansible.builtin.file:
+    state: directory
+    path: "{{ app_location }}/gsrcl_weights/"
+
+- name: symlink data
+  file:
+    src: "{{ app_location }}/gsrcl_weights/"
+    dest: "{{ app_location }}/gsrcl/data"
+    state: link
+    mode: "ug+rw"
 
 - name: Download gsrcl weights
   when: gsrcl_exist.stat.exists == False
@@ -43,7 +61,7 @@
 
 - name: unzip Adam
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Adam.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Adam.zip
 
 - name: remove weights
   ansible.builtin.file:
@@ -54,34 +72,34 @@
 
 - name: unzip Baron Human
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Baron\ Human.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Human.zip
     
 - name: mv dir Baron Human
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Baron\ Human {{ app_location }}gsrcl_weights/BaronHuman
+    cmd: mv {{ app_location }}/gsrcl_weights/Baron\ Human {{ app_location }}/gsrcl_weights/BaronHuman
     
 - name: mv Baron Human reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/BaronHuman/Baron\ Human-reference-genes.csv {{ app_location }}gsrcl_weights/BaronHuman/BaronHuman-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/BaronHuman/Baron\ Human-reference-genes.csv {{ app_location }}/gsrcl_weights/BaronHuman/BaronHuman-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
     state: absent
     path: "{{ app_location }}/Baron Human.zip"
 
-###
+##
 
 - name: unzip Baron Mouse
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Baron\ Mouse.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Mouse.zip
     
 - name: mv dir Baron Mouse
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Baron\ Mouse {{ app_location }}gsrcl_weights/BaronMouse
+    cmd: mv {{ app_location }}/gsrcl_weights/Baron\ Mouse {{ app_location }}/gsrcl_weights/BaronMouse
     
 - name: mv Baron Mouse reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/BaronMouse/Baron\ Mouse-reference-genes.csv {{ app_location }}gsrcl_weights/BaronMouse/BaronMouse-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/BaronMouse/Baron\ Mouse-reference-genes.csv {{ app_location }}/gsrcl_weights/BaronMouse/BaronMouse-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -92,7 +110,7 @@
 
 - name: unzip Klien
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Klien.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Klien.zip
 
 - name: remove weights
   ansible.builtin.file:
@@ -103,7 +121,7 @@
 
 - name: unzip Muraro
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Muraro.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Muraro.zip
 
 - name: remove weights
   ansible.builtin.file:
@@ -114,15 +132,15 @@
 
 - name: unzip PbmcBench_10Xv2.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/PbmcBench_10Xv2.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_10Xv2.zip
     
 - name: mv dir PbmcBench_10Xv2
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench_10Xv2 {{ app_location }}gsrcl_weights/PbmcBench10Xv2
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench_10Xv2 {{ app_location }}/gsrcl_weights/PbmcBench10Xv2
     
 - name: mv PbmcBench_10Xv2 reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench10Xv2/PbmcBench_10Xv2-reference-genes.csv {{ app_location }}gsrcl_weights/PbmcBench10Xv2/PbmcBench10Xv2-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench10Xv2/PbmcBench_10Xv2-reference-genes.csv {{ app_location }}/gsrcl_weights/PbmcBench10Xv2/PbmcBench10Xv2-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -133,15 +151,15 @@
 
 - name: unzip PbmcBench_10Xv3.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/PbmcBench_10Xv3.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_10Xv3.zip
     
 - name: mv dir PbmcBench_10Xv3
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench_10Xv3 {{ app_location }}gsrcl_weights/PbmcBench10Xv3
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench_10Xv3 {{ app_location }}/gsrcl_weights/PbmcBench10Xv3
     
 - name: mv PbmcBench_10Xv3 reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench10Xv3/PbmcBench_10Xv3-reference-genes.csv {{ app_location }}gsrcl_weights/PbmcBench10Xv3/PbmcBench10Xv3-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench10Xv3/PbmcBench_10Xv3-reference-genes.csv {{ app_location }}/gsrcl_weights/PbmcBench10Xv3/PbmcBench10Xv3-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -152,15 +170,15 @@
 
 - name: unzip PbmcBench_Drop-Seq.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/PbmcBench_Drop-Seq.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_Drop-Seq.zip
     
 - name: mv dir PbmcBench_Drop-Seq
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench_Drop-Seq {{ app_location }}gsrcl_weights/PbmcBenchDropSeq
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench_Drop-Seq {{ app_location }}/gsrcl_weights/PbmcBenchDropSeq
     
 - name: mv PbmcBench_Drop-Seq reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBenchDropSeq/PbmcBench_Drop-Seq-reference-genes.csv {{ app_location }}gsrcl_weights/PbmcBenchDropSeq/PbmcBenchDropSeq-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBenchDropSeq/PbmcBench_Drop-Seq-reference-genes.csv {{ app_location }}/gsrcl_weights/PbmcBenchDropSeq/PbmcBenchDropSeq-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -171,15 +189,15 @@
 
 - name: unzip PbmcBench_inDrop.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/PbmcBench_inDrop.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_inDrop.zip
     
 - name: mv dir PbmcBench_inDrop
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench_inDrop {{ app_location }}gsrcl_weights/PbmcBenchinDrop
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench_inDrop {{ app_location }}/gsrcl_weights/PbmcBenchinDrop
     
 - name: mv PbmcBench_inDrop reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBenchinDrop/PbmcBench_inDrop-reference-genes.csv {{ app_location }}gsrcl_weights/PbmcBenchinDrop/PbmcBenchinDrop-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBenchinDrop/PbmcBench_inDrop-reference-genes.csv {{ app_location }}/gsrcl_weights/PbmcBenchinDrop/PbmcBenchinDrop-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -190,15 +208,15 @@
 
 - name: unzip PbmcBench_Seq-Well.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/PbmcBench_Seq-Well.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_Seq-Well.zip
     
 - name: mv dir PbmcBench_Seq-Well
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBench_Seq-Well {{ app_location }}gsrcl_weights/PbmcBenchSeqWell
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench_Seq-Well {{ app_location }}/gsrcl_weights/PbmcBenchSeqWell
     
 - name: mv PbmcBench_Seq-Well reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/PbmcBenchSeqWell/PbmcBench_Seq-Well-reference-genes.csv {{ app_location }}gsrcl_weights/PbmcBenchSeqWell/PbmcBenchSeqWell-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/PbmcBenchSeqWell/PbmcBench_Seq-Well-reference-genes.csv {{ app_location }}/gsrcl_weights/PbmcBenchSeqWell/PbmcBenchSeqWell-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -209,15 +227,15 @@
 
 - name: unzip Quake_10x_Bladder.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Quake_10x_Bladder.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Quake_10x_Bladder.zip
     
 - name: mv dir Quake_10x_Bladder
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake_10x_Bladder {{ app_location }}gsrcl_weights/Quake10xBladder
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake_10x_Bladder {{ app_location }}/gsrcl_weights/Quake10xBladder
     
 - name: mv Quake_10x_Bladder reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake10xBladder/Quake_10x_Bladder-reference-genes.csv {{ app_location }}gsrcl_weights/Quake10xBladder/Quake10xBladder-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake10xBladder/Quake_10x_Bladder-reference-genes.csv {{ app_location }}/gsrcl_weights/Quake10xBladder/Quake10xBladder-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -229,15 +247,15 @@
 
 - name: unzip Quake_10x_Limb_Muscle.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Quake_10x_Limb_Muscle.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Quake_10x_Limb_Muscle.zip
     
 - name: mv dir Quake_10x_Limb_Muscle
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake_10x_Limb_Muscle {{ app_location }}gsrcl_weights/Quake10xMuscle
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake_10x_Limb_Muscle {{ app_location }}/gsrcl_weights/Quake10xMuscle
     
 - name: mv Quake_10x_Limb_Muscle reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake10xMuscle/Quake_10x_Limb_Muscle-reference-genes.csv {{ app_location }}gsrcl_weights/Quake10xMuscle/Quake10xLimbMuscle-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake10xMuscle/Quake_10x_Limb_Muscle-reference-genes.csv {{ app_location }}/gsrcl_weights/Quake10xMuscle/Quake10xLimbMuscle-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -248,15 +266,15 @@
 
 - name: unzip Quake_Smart-seq2_Diaphragm.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Diaphragm.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Diaphragm.zip
     
 - name: mv dir Quake_Smart-seq2_Diaphragm
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Diaphragm {{ app_location }}gsrcl_weights/QuakeSmartseq2Diaphragm
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Diaphragm {{ app_location }}/gsrcl_weights/QuakeSmartseq2Diaphragm
     
 - name: mv Quake_Smart-seq2_Diaphragm reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/QuakeSmartseq2Diaphragm/Quake_Smart-seq2_Diaphragm-reference-genes.csv {{ app_location }}gsrcl_weights/QuakeSmartseq2Diaphragm/QuakeSmartseq2Diaphragm-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/QuakeSmartseq2Diaphragm/Quake_Smart-seq2_Diaphragm-reference-genes.csv {{ app_location }}/gsrcl_weights/QuakeSmartseq2Diaphragm/QuakeSmartseq2Diaphragm-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -267,15 +285,15 @@
 
 - name: unzip Quake_Smart-seq2_Limb_Muscle.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Limb_Muscle.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Limb_Muscle.zip
     
 - name: mv dir Quake_Smart-seq2_Limb_Muscle
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Limb_Muscle {{ app_location }}gsrcl_weights/QuakeSmartseq2LimbMuscle
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Limb_Muscle {{ app_location }}/gsrcl_weights/QuakeSmartseq2LimbMuscle
     
 - name: mv Quake_Smart-seq2_Limb_Muscle reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/QuakeSmartseq2LimbMuscle/Quake_Smart-seq2_Limb_Muscle-reference-genes.csv {{ app_location }}gsrcl_weights/QuakeSmartseq2LimbMuscle/QuakeSmartseq2LimbMuscle-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/QuakeSmartseq2LimbMuscle/Quake_Smart-seq2_Limb_Muscle-reference-genes.csv {{ app_location }}/gsrcl_weights/QuakeSmartseq2LimbMuscle/QuakeSmartseq2LimbMuscle-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -286,15 +304,15 @@
 
 - name: unzip Quake_Smart-seq2_Lung.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Lung.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Lung.zip
     
 - name: mv dir Quake_Smart-seq2_Lung
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Lung {{ app_location }}gsrcl_weights/QuakeSmartseq2Lung
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Lung {{ app_location }}/gsrcl_weights/QuakeSmartseq2Lung
     
 - name: mv Quake_Smart-seq2_Lung reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/QuakeSmartseq2Lung/Quake_Smart-seq2_Lung-reference-genes.csv {{ app_location }}gsrcl_weights/QuakeSmartseq2Lung/QuakeSmartseq2Lung-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/QuakeSmartseq2Lung/Quake_Smart-seq2_Lung-reference-genes.csv {{ app_location }}/gsrcl_weights/QuakeSmartseq2Lung/QuakeSmartseq2Lung-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -305,15 +323,15 @@
 
 - name: unzip Quake_Smart-seq2_Trachea.zip
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Trachea.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Trachea.zip
     
 - name: mv dir Quake_Smart-seq2_Trachea
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/Quake_Smart-seq2_Trachea {{ app_location }}gsrcl_weights/QuakeSmartseq2Trachea
+    cmd: mv {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Trachea {{ app_location }}/gsrcl_weights/QuakeSmartseq2Trachea
     
 - name: mv Quake_Smart-seq2_Trachea reference
   ansible.builtin.command:
-    cmd: mv {{ app_location }}gsrcl_weights/QuakeSmartseq2Trachea/Quake_Smart-seq2_Trachea-reference-genes.csv {{ app_location }}gsrcl_weights/QuakeSmartseq2Trachea/QuakeSmartseq2Trachea-reference-genes.csv
+    cmd: mv {{ app_location }}/gsrcl_weights/QuakeSmartseq2Trachea/Quake_Smart-seq2_Trachea-reference-genes.csv {{ app_location }}/gsrcl_weights/QuakeSmartseq2Trachea/QuakeSmartseq2Trachea-reference-genes.csv
 
 - name: remove weights
   ansible.builtin.file:
@@ -324,7 +342,7 @@
 
 - name: unzip Romanov
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Romanov.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Romanov.zip
 
 - name: remove weights
   ansible.builtin.file:
@@ -335,7 +353,7 @@
 
 - name: unzip Segerstolpe
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Segerstolpe.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Segerstolpe.zip
 
 - name: remove weights
   ansible.builtin.file:
@@ -346,7 +364,7 @@
 
 - name: unzip Xin
   ansible.builtin.command:
-    cmd: unzip {{ app_location }}gsrcl_weights/Xin.zip
+    cmd: unzip {{ app_location }}/gsrcl_weights/Xin.zip
 
 - name: remove weights
   ansible.builtin.file:
