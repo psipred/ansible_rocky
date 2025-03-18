@@ -59,14 +59,14 @@
     when: blastp_exist.stat.exists == False
     get_url:
       url: ftp://ftp.ncbi.nlm.nih.gov/blast/executables/blast+/2.15.0/ncbi-blast-2.15.0+-x64-linux.tar.gz
-      dest: "{{ app_location }}/ncbi-blast-2.15.0+-src"
+      dest: "{{ app_location }}/ncbi-blast-2.15.0+-x64-linux.tar.gz"
       timeout: 120
     register: get_url_result
 
   - name: unarchive blast
     when: blastp_exist.stat.exists == False
     unarchive:
-      src: "{{ app_location }}/ncbi-blast-2.15.0+-src.tar.gz"
+      src: "{{ app_location }}/ncbi-blast-2.15.0+-x64-linux.tar.gz"
       dest: "{{ app_location }}/"
       remote_src: yes
 

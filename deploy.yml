@@ -1,15 +1,15 @@
 ---
 #  WARNING! YOU MUST HAVE A COMPLETE secrets/
 
-# - name: Set up mount point
-#   hosts: everyone
-#   become: true
-#   become_user: dbuchan
-#   become_method: sudo
-#   roles:
-#     - global
-#   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml
+- name: Install group packages
+  hosts: everyone
+  become: true
+  become_user: dbuchan
+  become_method: sudo
+  roles:
+    - global
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Apply the redis configuration
 #   hosts: redis
@@ -100,12 +100,12 @@
     # - hspred
     # - memembed
     # - dmp
-    # - dmpmetal
+    - dmpmetal
     # - merizo
     # - dmpfold2
     # - s4pred
     # - ffpred
-    - gsrcl # TBC
+    # - gsrcl # TBC
   vars_files:
    - secrets/{{ my_env }}_secrets.yaml
 

@@ -18,8 +18,8 @@
     become_user: root
     become_method: sudo
     cpanm:
-      name: Math::Round
-      mirror: http://cpan.mirror.triple-it.nl/
+      name: "Math::Round"
+      # mirror: http://cpan.mirror.triple-it.nl/
 
 # Previously we needed this version "sudo cpan -i L/LD/LDS/GD-2.56.tar.gz", worth noting for now
   - name: Install GD.pm
@@ -45,15 +45,15 @@
     when: memsat_exist.stat.exists == False
     get_url:
       url: http://bioinfadmin.cs.ucl.ac.uk/downloads/memsat-svm/models.tar.gz
-      dest: "{{ app_location }}/memsat-svm-pore"
+      dest: "{{ app_location }}/memsat-svm"
       timeout: 120
     register: get_url_result
 
   - name: untar memsat model data
     when: memsat_exist.stat.exists == False
     unarchive:
-      src: "{{ app_location }}/memsat-svm-pore/models.tar.gz"
-      dest: "{{ app_location }}/memsat-svm-pore/"
+      src: "{{ app_location }}/memsat-svm/models.tar.gz"
+      dest: "{{ app_location }}/memsat-svm/"
       remote_src: yes
 
   - name: make binaries
@@ -61,6 +61,6 @@
   
   - name: Touch a file, using symbolic modes to set the permissions (equivalent to 0644)
     ansible.builtin.file:
-      path: "{{ app_location }}/memsat-svm-pore/input"
+      path: "{{ app_location }}/memsat-svm/input"
       state: touch
       mode: u=rwx,g=rwx,o=rwx
