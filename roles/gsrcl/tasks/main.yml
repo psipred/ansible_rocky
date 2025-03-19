@@ -61,12 +61,13 @@
 
 - name: unzip Adam
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Adam.zip
 
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Adam.zip"
+    path: "{{ app_location }}/gsrcl_weights/Adam.zip"
 
 ###
 
@@ -86,7 +87,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Baron Human.zip"
+    path: "{{ app_location }}/gsrcl_weights/Baron Human.zip"
 
 ##
 
@@ -106,7 +107,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Baron Mouse.zip"
+    path: "{{ app_location }}/gsrcl_weights/Baron Mouse.zip"
 
 ###
 
@@ -118,7 +119,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Klien.zip"
+    path: "{{ app_location }}/gsrcl_weights/Klien.zip"
 
 ###
 
@@ -130,7 +131,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Muraro.zip"
+    path: "{{ app_location }}/gsrcl_weights/Muraro.zip"
 
 ###
 
@@ -150,7 +151,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/PbmcBench_10Xv2.zip"
+    path: "{{ app_location }}/gsrcl_weights/PbmcBench_10Xv2.zip"
 
 ###
 
@@ -171,7 +172,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/PbmcBench_10Xv3.zip"
+    path: "{{ app_location }}/gsrcl_weights/PbmcBench_10Xv3.zip"
 
 ###
 
@@ -191,7 +192,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/PbmcBench_Drop-Seq.zip"
+    path: "{{ app_location }}/gsrcl_weights/PbmcBench_Drop-Seq.zip"
 
 ###
 
@@ -211,7 +212,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/PbmcBench_inDrop.zip"
+    path: "{{ app_location }}/gsrcl_weights/PbmcBench_inDrop.zip"
 
 ###
 
@@ -231,7 +232,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/PbmcBench_Seq-Well.zip"
+    path: "{{ app_location }}/gsrcl_weights/PbmcBench_Seq-Well.zip"
 
 ###
 
@@ -251,7 +252,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Quake_10x_Bladder.zip"
+    path: "{{ app_location }}/gsrcl_weights/Quake_10x_Bladder.zip"
 
 
 ###
@@ -272,7 +273,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Quake_10x_Limb_Muscle.zip"
+    path: "{{ app_location }}/gsrcl_weights/Quake_10x_Limb_Muscle.zip"
 
 ###
 
@@ -292,7 +293,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Quake_Smart-seq2_Diaphragm.zip"
+    path: "{{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Diaphragm.zip"
 
 ###
 
@@ -312,7 +313,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Quake_Smart-seq2_Limb_Muscle.zip"
+    path: "{{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Limb_Muscle.zip"
 
 ###
 
@@ -332,7 +333,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Quake_Smart-seq2_Lung.zip"
+    path: "{{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Lung.zip"
 
 ###
 
@@ -352,7 +353,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Quake_Smart-seq2_Trachea.zip"
+    path: "{{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Trachea.zip"
 
 ###
 
@@ -364,7 +365,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Romanov.zip"
+    path: "{{ app_location }}/gsrcl_weights/Romanov.zip"
 
 ###
 
@@ -376,7 +377,7 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Segerstolpe.zip"
+    path: "{{ app_location }}/gsrcl_weights/Segerstolpe.zip"
 
 ###
 
@@ -388,4 +389,4 @@
 - name: remove weights
   ansible.builtin.file:
     state: absent
-    path: "{{ app_location }}/Xin.zip"
+    path: "{{ app_location }}/gsrcl_weights/Xin.zip"
