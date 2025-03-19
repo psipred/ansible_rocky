@@ -14,4 +14,4 @@
   ansible.builtin.replace:
     path: /home/django_worker/aa_env/lib/python3.9/site-packages/dmpfold/network.py
     regexp: 'w, v = torch.symeig'
-    line: 'w, v = torch.linalg.eigh(M.float())'
+    replace: 'w, v = torch.linalg.eigh(M.float())'
