@@ -9,7 +9,7 @@
     virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
 
 # https://github.com/psipred/DMPfold2/pull/8
-Here we monkey patch dmpfold2, as we can't run too many different pytorch versions on the server
+# Here we monkey patch dmpfold2, as we can't run too many different pytorch versions on the server
 - name: swap symeigh with linalg.eigh
   ansible.builtin.lineinfile:
     path: /etc/selinux/config
