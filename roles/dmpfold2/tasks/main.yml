@@ -12,6 +12,6 @@
 # Here we monkey patch dmpfold2, as we can't run too many different pytorch versions on the server
 - name: swap symeigh with linalg.eigh
   ansible.builtin.lineinfile:
-    path: /etc/selinux/config
+    path: /home/django_worker/aa_env/lib/python3.9/site-packages/dmpfold/network.py
     regexp: 'w, v = torch.symeig'
-    line: w, v = torch.linalg.eigh(M.float())
+    line: 'w, v = torch.linalg.eigh(M.float())''
