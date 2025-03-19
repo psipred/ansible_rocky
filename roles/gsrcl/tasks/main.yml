@@ -72,6 +72,7 @@
 
 - name: unzip Baron Human
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Human.zip
     
 - name: mv dir Baron Human
@@ -91,6 +92,7 @@
 
 - name: unzip Baron Mouse
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Mouse.zip
     
 - name: mv dir Baron Mouse
@@ -110,6 +112,7 @@
 
 - name: unzip Klien
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Klien.zip
 
 - name: remove weights
@@ -121,6 +124,7 @@
 
 - name: unzip Muraro
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Muraro.zip
 
 - name: remove weights
@@ -132,6 +136,7 @@
 
 - name: unzip PbmcBench_10Xv2.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_10Xv2.zip
     
 - name: mv dir PbmcBench_10Xv2
@@ -151,10 +156,12 @@
 
 - name: unzip PbmcBench_10Xv3.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_10Xv3.zip
     
 - name: mv dir PbmcBench_10Xv3
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: mv {{ app_location }}/gsrcl_weights/PbmcBench_10Xv3 {{ app_location }}/gsrcl_weights/PbmcBench10Xv3
     
 - name: mv PbmcBench_10Xv3 reference
@@ -170,6 +177,7 @@
 
 - name: unzip PbmcBench_Drop-Seq.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_Drop-Seq.zip
     
 - name: mv dir PbmcBench_Drop-Seq
@@ -189,6 +197,7 @@
 
 - name: unzip PbmcBench_inDrop.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_inDrop.zip
     
 - name: mv dir PbmcBench_inDrop
@@ -208,6 +217,7 @@
 
 - name: unzip PbmcBench_Seq-Well.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/PbmcBench_Seq-Well.zip
     
 - name: mv dir PbmcBench_Seq-Well
@@ -227,6 +237,7 @@
 
 - name: unzip Quake_10x_Bladder.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Quake_10x_Bladder.zip
     
 - name: mv dir Quake_10x_Bladder
@@ -247,6 +258,7 @@
 
 - name: unzip Quake_10x_Limb_Muscle.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Quake_10x_Limb_Muscle.zip
     
 - name: mv dir Quake_10x_Limb_Muscle
@@ -266,6 +278,7 @@
 
 - name: unzip Quake_Smart-seq2_Diaphragm.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Diaphragm.zip
     
 - name: mv dir Quake_Smart-seq2_Diaphragm
@@ -285,6 +298,7 @@
 
 - name: unzip Quake_Smart-seq2_Limb_Muscle.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Limb_Muscle.zip
     
 - name: mv dir Quake_Smart-seq2_Limb_Muscle
@@ -304,6 +318,7 @@
 
 - name: unzip Quake_Smart-seq2_Lung.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Lung.zip
     
 - name: mv dir Quake_Smart-seq2_Lung
@@ -323,6 +338,7 @@
 
 - name: unzip Quake_Smart-seq2_Trachea.zip
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Quake_Smart-seq2_Trachea.zip
     
 - name: mv dir Quake_Smart-seq2_Trachea
@@ -342,6 +358,7 @@
 
 - name: unzip Romanov
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Romanov.zip
 
 - name: remove weights
@@ -353,6 +370,7 @@
 
 - name: unzip Segerstolpe
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Segerstolpe.zip
 
 - name: remove weights
@@ -364,6 +382,7 @@
 
 - name: unzip Xin
   ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
     cmd: unzip {{ app_location }}/gsrcl_weights/Xin.zip
 
 - name: remove weights
