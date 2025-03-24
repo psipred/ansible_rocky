@@ -25,7 +25,7 @@
     when: dmpmetal_exist.stat.exists == False
     become_user: "{{ django_worker_user }}"
     environment:
-      LD_LIBRARY_PATH: /home/{{ django_worker_user }}/aa_env/lib/python3.9/site-packages/nvidia/cudnn/lib/:/home/{{ django_worker_user }}/aa_env/lib/python3.9/site-packages/nvidia/cuda_cupti/lib/:/home/{{ django_worker_user }}/aa_env/lib/python3.9/site-packages/nvidia/nccl/lib/:$LD_LIBRARY_PATH
+      LD_LIBRARY_PATH: /home/{{ django_worker_user }}/aa_env/lib/python3.9/site-packages/nvidia/cudnn/lib/:/home/{{ django_worker_user }}/aa_env/lib/python3.9/site-packages/nvidia/cuda_cupti/lib/:/home/{{ django_worker_user }}/aa_env/lib/python3.9/site-packages/nvidia/nccl/lib/
     pip:
       state: latest
       chdir: "{{ django_worker_home }}"
