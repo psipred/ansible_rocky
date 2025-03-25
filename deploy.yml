@@ -100,12 +100,12 @@
     # - hspred
     # - memembed
     # - dmp
-    - dmpmetal
+    # - dmpmetal
     # - merizo
     # - dmpfold2
     # - s4pred
     # - ffpred
-    # - gsrcl # TBC
+    - gsrcl
   vars_files:
    - secrets/{{ my_env }}_secrets.yaml
 

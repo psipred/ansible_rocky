@@ -32,7 +32,7 @@
       virtualenv: "{{ django_worker_home }}aa_env"
       virtualenv_command: /bin/virtualenv
       virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
-      name: flash-attn==2.5.5
+      name: flash-attn<3
 
   - name: Update importlib_metadata
     when: dmpmetal_exist.stat.exists == False

@@ -11,7 +11,7 @@
     become_user: root
     become_method: sudo
 
-  - name: Install Dependencies
+  - name: Install nvidia Dependencies
     shell: dnf -y module install nvidia-driver:latest-dkms
     become_user: root
     become_method: sudo
