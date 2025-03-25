@@ -29,6 +29,12 @@
       name: GD
       mirror: http://cpan.mirror.triple-it.nl/
 
+THIS IS THE WRONG MEMSAT
+THIS SHOULD INSTALL MEMSAT-SVM-pore from
+http://bioinfadmin.cs.ucl.ac.uk/downloads/memsat-svm/ 
+We should put memsat-svm-pore in to github
+
+must edit scrtip so the import Round is import Math::Round
   - name: Check if memsatsvm is installed
     stat: path={{ app_location }}/memsat-svm
     register: memsat_exist
