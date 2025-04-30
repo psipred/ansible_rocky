@@ -88,7 +88,7 @@
     when: uniref_exist.stat.exists == False
 
   - name: Run formatdb
-    shell: cd {{ data_location }}/uniref; /usr/local/bin/makeblastdb -in uniref90.fasta -dbtype prot
+    shell: cd {{ data_location }}/uniref; /data/blast-2.2.26/bin/formatdb -i uniref90.fasta -p T -v 5000
     when: uniref_exist.stat.exists == False
 
   - name: Check if we have pdbaa

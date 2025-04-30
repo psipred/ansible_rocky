@@ -41,6 +41,18 @@
     become_method: sudo
     shell: "cd {{ app_location }}/ImageMagick-7.1.1-30/; ldconfig /usr/local/lib"
 
+  - name: copy ld conf
+    when: im_exist.stat.exists == False
+    become_user: root
+    become_method: sudo
+    shell: "cd {{ app_location }}/ImageMagick-7.1.1-30/; ldconfig /usr/local/lib"
+
+  - name: copy ld conf
+    become_user: root
+    copy:
+      src: files/libMagick.conf
+      dest: /etc/ld.so.conf.d
+
   - name: Install SVG.pm
     cpanm:
       name: SVG
