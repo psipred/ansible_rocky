@@ -12,6 +12,6 @@
 # Here we monkey patch dmpfold2, as we can't run too many different pytorch versions on the server
 - name: swap symeigh with linalg.eigh
   ansible.builtin.replace:
-    path: /home/django_worker/aa_env/lib/python3.9/site-packages/dmpfold/network.py
+    path: "{{ django_worker_home }}aa_env/lib/python3.9/site-packages/dmpfold/network.py"
     regexp: 'w, v = torch.symeig\(M.float\(\), eigenvectors=True\)'
     replace: 'w, v = torch.linalg.eigh(M.float())'

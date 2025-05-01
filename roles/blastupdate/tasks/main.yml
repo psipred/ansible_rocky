@@ -6,33 +6,27 @@
       clone: yes
       force: yes
 
-# Hang over from when this wasn't run by crontab I think
-  # - name: Stop the aa_workers
-  #   shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery multi stop_verify worker --pidfile=/home/django_worker/analytics_automated/celery.pid --logfile=/home/django_worker/analytics_automated/logs/"
-  #   become_user: "{{ django_worker_user }}"
-  #   #when: celery_running.stdout.find("celery worker") == 1
-  # - name: Start the aa_workers
-  #   shell: "chdir={{ django_worker_home }}/analytics_automated/ source {{ django_worker_home }}aa_env/bin/activate; celery --app=analytics_automated_project.celery:app worker --loglevel=INFO -Q pdbtdbupdate,sequpdate,low_localhost,localhost,high_localhost,celery,low_R,R,high_R,low_Python,Python,high_Python --detach --pidfile=celery.pid"
-  #   become_user: "{{ django_worker_user }}"
-  #   #when: celery_running.stdout.find("-m celery worker --loglevel=INFO") == -1
-
-  - name: copy over the aa worker update service
-    become_user: root
-    become_method: sudo
-    copy:
-      src: files/update_aaworker.service
-      dest: /etc/systemd/system/aaworker.service
-      mode: "uog+x"
-
-  - name: Add service to systemctl
-    become_user: root
-    become_method: sudo
-    shell: systemctl enable aaworker.service
+  - name: make tmp dir
+    shell: mkdir {{ app_location }}/update_tmp; chown blast_worker {{ app_location }}/update_tmp
 
   - name: make tmp dir
-    shell: mkdir {{ data_location }}/update_tmp; chown {{ blast_worker_user }} {{ data_location}}/update_tmp
+    shell: mkdir {{ app_location }}/update_tdb; chown blast_worker {{ app_location }}/update_tdb
 
-  - name: make tmp dir
-    shell: mkdir {{ data_location }}/update_tdb; chown {{ blast_worker_user }} {{ data_location }}/update_tdb
+  - name: add blast db updates
+    become_user: "{{ blast_worker_user }}"
+    cron:
+      name: "Clean update seqdb"
+      minute: "0"
+      hour: "2"
+      day: "1"
+      job: "/usr/bin/sh {{ blast_worker_home }}/server_update/update_blast_sequence_databases.sh > /dev/null 2>&1"
 
+  - name: add pdb data update
+    become_user: "{{ blast_worker_user }}"
+    cron:
+      name: "Clean update seqdb"
+      minute: "0"
+      hour: "4"
+      day: "1"
+      job: "/usr/bin/sh {{ blast_worker_home }}/server_update/update_data_sequence_databases.sh > /dev/null 2>&1"
 

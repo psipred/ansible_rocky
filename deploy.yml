@@ -1,15 +1,15 @@
 ---
 #  WARNING! YOU MUST HAVE A COMPLETE secrets/
 
-- name: Install group packages
-  hosts: everyone
-  become: true
-  become_user: dbuchan
-  become_method: sudo
-  roles:
-    - global
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Install group packages
+#   hosts: everyone
+#   become: true
+#   become_user: dbuchan
+#   become_method: sudo
+#   roles:
+#     - global
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Apply the redis configuration
 #   hosts: redis
@@ -80,57 +80,90 @@
 # mempack won't compile in OSX
 # domThreader seg faults in OSX
 
-- name: Create Celery worker node
-  hosts: celery_worker_node
-  become: true
-  become_user: root
-  become_method: sudo
-  roles:
-    # - djangomachine
-    # - aaworker
-    # - merizosearch # do these two first as they take the longest
-    # - model_parts # do these two first as they take the longest
-    # - psipred
-    # - disopred
-    # - memsatsvm
-    # - pGenTHREADER 
-    # - dompred 
-    # - mempack
-    # - metsite
-    # - hspred
-    # - memembed
-    # - dmp
-    # - dmpmetal
-    # - merizo
-    # - dmpfold2
-    # - s4pred
-    # - ffpred
-    - gsrcl
-  vars_files:
-   - secrets/{{ my_env }}_secrets.yaml
-
-## Can only be run if server update is public
-## Could probably use inline to add in the slack webhooks from secrets rather than keeping them in the repo
-# - name: Create blast update machine
-#   hosts: blastupdate
+# - name: Create Celery worker node
+#   hosts: celery_worker_node
 #   become: true
 #   become_user: root
 #   become_method: sudo
 #   roles:
-#      - role: blastupdate
-#      when: my_env is match ("production")e
+#     - djangomachine
+#     - aaworker
+#     - merizosearch # do these two first as they take the longest
+#     - model_parts # do these two first as they take the longest
+#     - psipred
+#     - disopred
+#     - memsatsvm
+#     - pGenTHREADER 
+#     - dompred 
+#     - mempack
+#     - metsite
+#     - hspred
+#     - memembed
+#     - dmp
+#     - dmpmetal
+#     - merizo
+#     - dmpfold2
+#     - s4pred
+#     - ffpred
+#     - gsrcl
 #   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml 
+#    - secrets/{{ my_env }}_secrets.yaml
 
-###### WE SHOULD ADD THE CLEAN UP AND CRON THINGS HERE TOO, SEE WHAT IS ON THE CURRENT MACHINES
 ###### DON'T FORGET LOGROTATE AND memsatsvm clean up
+
+# WE SHOULD REALLY AUTOMATE MAKE SOME UPDATE SSH CREDENTIALS
+- name: Updates for datanodes
+  hosts: update_data
+  become: true
+  become_user: root
+  become_method: sudo
+  when: my_env is match ("production")
+  roles:
+    - dataupdates
+  vars_files:
+    - secrets/staging_secrets.yaml
+# #
+# - name: Updates for blastnodes
+#   hosts: update_blast
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   when: my_env is match ("production")
+#   roles:
+#     - blastupdates
+#   vars_files:
+#     - secrets/staging_secrets.yaml
+#
+# - name: Tidy processing tmp
+#   hosts: clear_tmp
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   when: my_env is match ("production")
+#   roles:
+#     - cleartmp
+#   vars_files:
+#     - secrets/production_secrets.yaml
+# #
+# - name: Tidy old db entries
+#   hosts: clear_db
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   when: my_env is match ("production")
+#   roles:
+#     - cleardb
+#   vars_files:
+#     - secrets/production_secrets.yaml
 
 # - name: Set assorted packages to be excluded from any auto updates or installs now everything is in place
 #   hosts: everyone
 #   become: true
 #   become_user: root
 #   become_method: sudo
+#   when: my_env is match ("production")
 #   roles:
 #     - closing
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
+

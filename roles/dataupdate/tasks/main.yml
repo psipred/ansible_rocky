@@ -1,0 +1,49 @@
+- name : Check Out update scripts from GIT
+  become_user: "{{ django_worker_user }}"
+  git:
+    repo: https://github.com/psipred/server_update.git
+    dest: "{{ django_worker_home }}/server_update"
+    clone: yes
+    force: yes
+
+- name: make tmp dir
+  shell: mkdir {{ app_location }}/update_tmp; chown django_worker {{ app_location }}/update_tmp
+
+- name: make tmp dir
+  shell: mkdir {{ app_location }}/update_tdb; chown django_worker {{ app_location }}/update_tdb
+
+- name: add PDB update to cron
+  become_user: "{{ django_worker_user }}"
+  cron:
+    name: "Update PDB"
+    minute: "0"
+    hour: "2"
+    day: "1"
+    job: "/usr/bin/sh {{ django_worker_home }}/server_update/update_pdb.sh > /dev/null 2>&1"
+
+# - name: add TDB
+#   become_user: "{{ django_worker_user }}"
+#   cron:
+#     name: "Update sequence TDB"
+#     minute: "0"
+#     hour: "2"
+#     day: "5"
+#     job: "/usr/bin/sh {{ django_worker_home }}/server_update/update_tdb.sh > /dev/null 2>&1"
+
+# - name: add TDB
+#   become_user: "{{ django_worker_user }}"
+#   cron:
+#     name: "Update sequence TDB 2nd"
+#     minute: "0"
+#     hour: "2"
+#     day: "29"
+#     job: "/usr/bin/sh {{ django_worker_home }}/server_update/update_tdb.sh > /dev/null 2>&1"
+
+# - name: update seqdbs
+#   become_user: "{{ django_worker_user }}"
+#   cron:
+#     name: "Update sequence dbs"
+#     minute: "0"
+#     hour: "2"
+#     day: "3"
+#     job: "/usr/bin/sh {{ django_worker_home }}/server_update/update_data_sequence_databases.sh > /dev/null 2>&1"
