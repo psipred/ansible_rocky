@@ -60,7 +60,7 @@
   roles:
     - djangomachine
     - blastmachine
-    - blastworkers
+    # - blastworkers
   vars_files:
     - secrets/{{ my_env }}_secrets.yaml
 
