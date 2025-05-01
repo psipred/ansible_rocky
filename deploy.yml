@@ -52,17 +52,17 @@
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
 
-# - name: Create blastmachine
-#   hosts: blast
-#   become: true
-#   become_user: root
-#   become_method: sudo
-#   roles:
-#     - djangomachine
-#     - blastmachine
-#     - blastworkers
-#   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml
+- name: Create blastmachine
+  hosts: blast
+  become: true
+  become_user: root
+  become_method: sudo
+  roles:
+    - djangomachine
+    - blastmachine
+    - blastworkers
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Create blast_cache machine
 #   hosts: blast_cache
@@ -112,16 +112,16 @@
 ###### DON'T FORGET LOGROTATE AND memsatsvm clean up
 
 # WE SHOULD REALLY AUTOMATE MAKE SOME UPDATE SSH CREDENTIALS
-- name: Updates for datanodes
-  hosts: update_data
-  become: true
-  become_user: root
-  become_method: sudo
-  when: my_env is match ("production")
-  roles:
-    - dataupdates
-  vars_files:
-    - secrets/staging_secrets.yaml
+# - name: Updates for datanodes
+#   hosts: update_data
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   when: my_env is match ("production")
+#   roles:
+#     - dataupdates
+#   vars_files:
+#     - secrets/staging_secrets.yaml
 # #
 # - name: Updates for blastnodes
 #   hosts: update_blast

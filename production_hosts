@@ -22,8 +22,8 @@
 # [aa_head]
 # 128.16.4.102
 
-# [blastmachine]
-# 128.16.6.210
+[blastmachine]
+128.16.6.210
 # 128.16.13.202
 
 #[celery_worker_node]
@@ -34,8 +34,8 @@
 # [blastupdate]
 # 128.16.6.210
 
-[update_data] 
-128.16.13.210
+# [update_data] 
+# 128.16.13.210
 
 # [everyone]
 #128.16.4.118
