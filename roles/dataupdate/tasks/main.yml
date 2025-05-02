@@ -9,8 +9,8 @@
 - name: make tmp dir
   shell: mkdir {{ app_location }}/update_tmp; chown django_worker {{ app_location }}/update_tmp
 
-- name: make tmp dir
-  shell: mkdir {{ app_location }}/update_tdb; chown django_worker {{ app_location }}/update_tdb
+# - name: make tmp dir
+#   shell: mkdir {{ app_location }}/update_tdb; chown django_worker {{ app_location }}/update_tdb
 
 - name: add PDB update to cron
   become_user: "{{ django_worker_user }}"

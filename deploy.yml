@@ -52,17 +52,17 @@
 #   vars_files:
 #     - secrets/{{ my_env }}_secrets.yaml
 
-- name: Create blastmachine
-  hosts: blast
-  become: true
-  become_user: root
-  become_method: sudo
-  roles:
-    - djangomachine
-    - blastmachine
-    # - blastworkers
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Create blastmachine
+#   hosts: blast
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   roles:
+#     - djangomachine
+#     - blastmachine
+#     - blastworkers
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 
 # - name: Create blast_cache machine
 #   hosts: blast_cache
@@ -113,24 +113,24 @@
 
 # WE SHOULD REALLY AUTOMATE MAKE SOME UPDATE SSH CREDENTIALS
 # - name: Updates for datanodes
-#   hosts: update_data
+#   hosts: data_update
 #   become: true
 #   become_user: root
 #   become_method: sudo
-#   when: my_env is match ("production")
 #   roles:
-#     - dataupdates
+#     - role: dataupdate
+#       when: my_env is match ("production")
 #   vars_files:
 #     - secrets/staging_secrets.yaml
-# #
+
 # - name: Updates for blastnodes
 #   hosts: update_blast
 #   become: true
 #   become_user: root
 #   become_method: sudo
-#   when: my_env is match ("production")
 #   roles:
-#     - blastupdates
+#     - role: blastupdate
+#       when: my_env is match ("production")
 #   vars_files:
 #     - secrets/staging_secrets.yaml
 #
@@ -139,31 +139,31 @@
 #   become: true
 #   become_user: root
 #   become_method: sudo
-#   when: my_env is match ("production")
 #   roles:
-#     - cleartmp
+#     - role: cleartmp
+#       when: my_env is match ("production")
 #   vars_files:
 #     - secrets/production_secrets.yaml
-# #
+
 # - name: Tidy old db entries
 #   hosts: clear_db
 #   become: true
 #   become_user: root
 #   become_method: sudo
-#   when: my_env is match ("production")
 #   roles:
-#     - cleardb
+#     - role: cleardb
+#       when: my_env is match ("production")
 #   vars_files:
 #     - secrets/production_secrets.yaml
 
-# - name: Set assorted packages to be excluded from any auto updates or installs now everything is in place
-#   hosts: everyone
-#   become: true
-#   become_user: root
-#   become_method: sudo
-#   when: my_env is match ("production")
-#   roles:
-#     - closing
-#   vars_files:
-#     - secrets/{{ my_env }}_secrets.yaml
+- name: Set assorted packages to be excluded from any auto updates or installs now everything is in place
+  hosts: everyone
+  become: true
+  become_user: root
+  become_method: sudo
+  roles:
+    - role: closing
+      when: my_env is match ("production")
+  vars_files:
+    - secrets/{{ my_env }}_secrets.yaml
 
