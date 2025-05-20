@@ -59,55 +59,55 @@
 
 # rename all the files, so repetitive
 
-# - name: unzip Adam
-#   ansible.builtin.command:
-#     chdir: "{{ app_location }}/gsrcl_weights/"
-#     cmd: unzip {{ app_location }}/gsrcl_weights/Adam.zip
+- name: unzip Adam
+  ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
+    cmd: unzip {{ app_location }}/gsrcl_weights/Adam.zip
 
-# - name: remove weights
-#   ansible.builtin.file:
-#     state: absent
-#     path: "{{ app_location }}/gsrcl_weights/Adam.zip"
+- name: remove weights
+  ansible.builtin.file:
+    state: absent
+    path: "{{ app_location }}/gsrcl_weights/Adam.zip"
 
-# ###
+###
 
-# - name: unzip Baron Human
-#   ansible.builtin.command:
-#     chdir: "{{ app_location }}/gsrcl_weights/"
-#     cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Human.zip
+- name: unzip Baron Human
+  ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
+    cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Human.zip
     
-# - name: mv dir Baron Human
-#   ansible.builtin.command:
-#     cmd: mv {{ app_location }}/gsrcl_weights/Baron\ Human {{ app_location }}/gsrcl_weights/BaronHuman
+- name: mv dir Baron Human
+  ansible.builtin.command:
+    cmd: mv {{ app_location }}/gsrcl_weights/Baron\ Human {{ app_location }}/gsrcl_weights/BaronHuman
     
-# - name: mv Baron Human reference
-#   ansible.builtin.command:
-#     cmd: mv {{ app_location }}/gsrcl_weights/BaronHuman/Baron\ Human-reference-genes.csv {{ app_location }}/gsrcl_weights/BaronHuman/BaronHuman-reference-genes.csv
+- name: mv Baron Human reference
+  ansible.builtin.command:
+    cmd: mv {{ app_location }}/gsrcl_weights/BaronHuman/Baron\ Human-reference-genes.csv {{ app_location }}/gsrcl_weights/BaronHuman/BaronHuman-reference-genes.csv
 
-# - name: remove weights
-#   ansible.builtin.file:
-#     state: absent
-#     path: "{{ app_location }}/gsrcl_weights/Baron Human.zip"
+- name: remove weights
+  ansible.builtin.file:
+    state: absent
+    path: "{{ app_location }}/gsrcl_weights/Baron Human.zip"
 
-# ##
+##
 
-# - name: unzip Baron Mouse
-#   ansible.builtin.command:
-#     chdir: "{{ app_location }}/gsrcl_weights/"
-#     cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Mouse.zip
+- name: unzip Baron Mouse
+  ansible.builtin.command:
+    chdir: "{{ app_location }}/gsrcl_weights/"
+    cmd: unzip {{ app_location }}/gsrcl_weights/Baron\ Mouse.zip
     
-# - name: mv dir Baron Mouse
-#   ansible.builtin.command:
-#     cmd: mv {{ app_location }}/gsrcl_weights/Baron\ Mouse {{ app_location }}/gsrcl_weights/BaronMouse
+- name: mv dir Baron Mouse
+  ansible.builtin.command:
+    cmd: mv {{ app_location }}/gsrcl_weights/Baron\ Mouse {{ app_location }}/gsrcl_weights/BaronMouse
     
-# - name: mv Baron Mouse reference
-#   ansible.builtin.command:
-#     cmd: mv {{ app_location }}/gsrcl_weights/BaronMouse/Baron\ Mouse-reference-genes.csv {{ app_location }}/gsrcl_weights/BaronMouse/BaronMouse-reference-genes.csv
+- name: mv Baron Mouse reference
+  ansible.builtin.command:
+    cmd: mv {{ app_location }}/gsrcl_weights/BaronMouse/Baron\ Mouse-reference-genes.csv {{ app_location }}/gsrcl_weights/BaronMouse/BaronMouse-reference-genes.csv
 
-# - name: remove weights
-#   ansible.builtin.file:
-#     state: absent
-#     path: "{{ app_location }}/gsrcl_weights/Baron Mouse.zip"
+- name: remove weights
+  ansible.builtin.file:
+    state: absent
+    path: "{{ app_location }}/gsrcl_weights/Baron Mouse.zip"
 
 ###
 

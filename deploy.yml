@@ -80,34 +80,34 @@
 # mempack won't compile in OSX
 # domThreader seg faults in OSX
 
-# - name: Create Celery worker node
-#   hosts: celery_worker_node
-#   become: true
-#   become_user: root
-#   become_method: sudo
-#   roles:
-#     - djangomachine
-#     - aaworker
-#     - merizosearch # do these two first as they take the longest
-#     - model_parts # do these two first as they take the longest
-#     - psipred
-#     - disopred
-#     - memsatsvm
-#     - pGenTHREADER 
-#     - dompred 
-#     - mempack
-#     - metsite
-#     - hspred
-#     - memembed
-#     - dmp
-#     - dmpmetal
-#     - merizo
-#     - dmpfold2
-#     - s4pred
-#     - ffpred
-#     - gsrcl
-#   vars_files:
-#    - secrets/{{ my_env }}_secrets.yaml
+- name: Create Celery worker node
+  hosts: celery_worker_node
+  become: true
+  become_user: root
+  become_method: sudo
+  roles:
+    # - djangomachine
+    # - aaworker
+    # - merizosearch # do these two first as they take the longest
+    # - model_parts # do these two first as they take the longest
+    # - psipred
+    # - disopred
+    # - memsatsvm
+    # - pGenTHREADER 
+    # - dompred 
+    # - mempack
+    # - metsite
+    # - hspred
+    # - memembed
+    # - dmp
+    # - dmpmetal
+    # - merizo
+    # - dmpfold2
+    # - s4pred
+    # - ffpred
+    - gsrcl
+  vars_files:
+   - secrets/{{ my_env }}_secrets.yaml
 
 ###### DON'T FORGET LOGROTATE AND memsatsvm clean up
 
@@ -156,14 +156,14 @@
 #   vars_files:
 #     - secrets/production_secrets.yaml
 
-- name: Set assorted packages to be excluded from any auto updates or installs now everything is in place
-  hosts: everyone
-  become: true
-  become_user: root
-  become_method: sudo
-  roles:
-    - role: closing
-      when: my_env is match ("production")
-  vars_files:
-    - secrets/{{ my_env }}_secrets.yaml
+# - name: Set assorted packages to be excluded from any auto updates or installs now everything is in place
+#   hosts: everyone
+#   become: true
+#   become_user: root
+#   become_method: sudo
+#   roles:
+#     - role: closing
+#       when: my_env is match ("production")
+#   vars_files:
+#     - secrets/{{ my_env }}_secrets.yaml
 

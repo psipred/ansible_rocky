@@ -2,3 +2,5 @@ secrets/*
 new_secrets.tar.gz
 secrets.tar.gz
 *secrets.tar.gz
+*.aes256cbc
+server_configs.tar.gz
