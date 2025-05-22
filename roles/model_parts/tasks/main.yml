@@ -30,3 +30,32 @@
     when: pdb_path_exist.stat.exists == False
     shell: "cd {{ data_location }}/pdb; wget -r -nd --tries=10 ftp://ftp.ebi.ac.uk/pub/databases/msd/pdb_uncompressed/"
 
+  - name: Check modeller is present
+    stat: path=/data/modeller9.17
+    register: modeller_exist
+
+  - name: Download modeller
+    when: modeller_exist.stat.exists == False
+    get_url:
+      url: https://salilab.org/modeller/9.17/modeller-9.17.tar.gz
+      dest: /data/
+      timeout: 120
+    register: get_url_result
+
+  - name: unarchive modeller
+    when: modeller_exist.stat.exists == False
+    unarchive:
+      src: /data/modeller-9.17.tar.gz
+      dest: /data/
+      remote_src: yes
+
+  - name: Move hacked install script over
+    # when: maketdb_exist.stat.exists == False
+    copy:
+      src: secrets/modeller_Install
+      dest: /data/modeller-9.17/Install
+      mode: "uog+x"
+
+  - name: install modeller
+    when: modeller_exist.stat.exists == False
+    shell: "cd /data/modeller-9.17; ./Install"
