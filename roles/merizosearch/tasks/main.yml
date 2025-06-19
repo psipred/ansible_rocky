@@ -20,6 +20,16 @@
     virtualenv_command: /bin/virtualenv
     virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
 
+- name: Install pdbvalidation
+  become_user: "{{ django_worker_user }}"
+  pip:
+    name: pdb-tools
+    state: latest
+    chdir: "{{ django_worker_home }}"
+    virtualenv: "{{ django_worker_home }}aa_env"
+    virtualenv_command: /bin/virtualenv
+    virtualenv_python: "{{ django_worker_home }}aa_env/bin/python"
+
 - name: Creates cath ms directory
   ansible.builtin.file:
     path: "{{ app_location }}/cath-4.3-foldclassdb"

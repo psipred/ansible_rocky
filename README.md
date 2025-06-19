@@ -30,6 +30,21 @@ as the current setup and the staging setup
 > ansible-playbook -i production_hosts --extra-vars "my_env=production" deploy.yml
 ```
 
+## Updating the frontend
+
+If you need to add a message or suspend submissions, for instance 
+
+``` bash
+> ansible-playbook -i staging_hosts --extra-vars "my_env=staging" update_frontend.yml
+```
+
+or
+
+
+``` bash
+> ansible-playbook -i production_hosts --extra-vars "my_env=production" update_frontend.yml
+```
+
 
 ## Notes on creating passwords with openssl
 
