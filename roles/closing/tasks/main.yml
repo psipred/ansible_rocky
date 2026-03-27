@@ -3,4 +3,4 @@
     path: /etc/dnf/dnf.conf
     section: main
     option: exclude
-    value: redis python3 python-psycopg2 libpqxx mod_wsgi perl-CPAN perl-App-cpanminus.noarch wget python3-devel blas lapack blas-devel lapack-devel gnuplot tcsh boost-devel_64 gd gd-devel lapack64 lapack64-devel openblas-devel glib2-2.56.1-2.el7.i686 lmdb ghostscript-devel
+    value: redis python3 python-psycopg2 libpqxx mod_wsgi perl-CPAN perl-App-cpanminus.noarch wget python3-devel lapack lapack-devel gnuplot tcsh boost-devel_64 gd gd-devel lapack64 lapack64-devel glib2-2.56.1-2.el7.i686 lmdb ghostscript-devel
